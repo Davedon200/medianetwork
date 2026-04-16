@@ -1,3 +1,21 @@
+import 'package:flutter/material.dart';
+
+
+
+final BoxDecoration boxDecoration = BoxDecoration(
+  borderRadius: BorderRadius.circular(32),
+  gradient: const LinearGradient(
+    colors: [Color(0xFF6A5AE0), Color(0xFF2DD4BF)],
+  ),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.deepPurpleAccent.withOpacity(0.35),
+      blurRadius: 18,
+      offset: const Offset(0, 10),
+    ),
+  ],
+);
+
 final List<String> skills = [
   "Graphics Design",
   "Motion Graphics",
@@ -245,14 +263,13 @@ final List<String> nationalities = [
   "Zimbabwe",
 ];
 
-
-  final List<String> titles = [
-    "Pastor",
-    "Deacon",
-    "Deaconess",
-    "Brother",
-    "Sister",
-  ];
+final List<String> titles = [
+  "Pastor",
+  "Deacon",
+  "Deaconess",
+  "Brother",
+  "Sister",
+];
 
 final List<Map<String, String>> countryCodes = [
   {"code": "+1", "name": "United States / Canada"},
