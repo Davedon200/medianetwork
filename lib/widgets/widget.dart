@@ -1,5 +1,205 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
+import 'package:media_network/model/web_models.dart';
+import 'package:media_network/services/dio_service.dart';
+import 'package:video_player/video_player.dart';
+
+class MediaCard extends StatelessWidget {
+  final MediaItem item;
+
+  const MediaCard({super.key, required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    final boxDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(32),
+      gradient: const LinearGradient(
+        colors: [Color(0xFF6A5AE0), Color(0xFF2DD4BF)],
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.deepPurpleAccent.withValues(alpha: 0.35),
+          blurRadius: 18,
+          offset: const Offset(0, 10),
+        ),
+      ],
+    );
+
+    return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: boxDecoration,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(
+                  imageUrl: item.thumbnail,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  fadeInDuration: const Duration(milliseconds: 300),
+                  placeholder: (context, url) =>
+                      Container(color: const Color(0xFF1E293B)),
+                  errorWidget: (context, url, error) => Container(
+                    color: const Color(0xFF0F172A),
+                    child: const Icon(Icons.error, color: Colors.white54),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(item.title, style: const TextStyle(color: Colors.white)),
+            const SizedBox(height: 10),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.black.withValues(alpha: 0.8),
+                      builder: (_) => PreviewModal(item: item),
+                    );
+                  },
+                  child: const Text("View"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await DownloadService.downloadFile(item.url, item.title);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Download started")),
+                    );
+                  },
+                  child: const Text("Download"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PreviewModal extends StatefulWidget {
+  final MediaItem item;
+
+  const PreviewModal({super.key, required this.item});
+
+  @override
+  State<PreviewModal> createState() => _PreviewModalState();
+}
+
+class _PreviewModalState extends State<PreviewModal>
+    with SingleTickerProviderStateMixin {
+  VideoPlayerController? controller;
+  late AnimationController _animationController;
+  late Animation<double> _scale;
+  late Animation<double> _fade;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// Animation setup
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _scale = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutBack,
+    );
+
+    _fade = CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
+
+    _animationController.forward();
+
+    /// Video init
+    if (widget.item.type == "video") {
+      if (widget.item.url.isNotEmpty) {
+        final uri = Uri.tryParse(widget.item.url);
+        if (uri != null) {
+          controller = VideoPlayerController.networkUrl(uri)
+            ..initialize().then((_) {
+              setState(() {});
+              controller!.play();
+            });
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void closeModal() async {
+    await _animationController.reverse();
+    if (mounted) Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fade,
+      child: Center(
+        child: ScaleTransition(
+          scale: _scale,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.7,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Stack(
+                children: [
+                  /// CONTENT
+                  Center(
+                    child: widget.item.type == "video"
+                        ? controller != null && controller!.value.isInitialized
+                              ? AspectRatio(
+                                  aspectRatio: controller!.value.aspectRatio,
+                                  child: VideoPlayer(controller!),
+                                )
+                              : const CircularProgressIndicator()
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(widget.item.url),
+                          ),
+                  ),
+
+                  /// CLOSE BUTTON
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: IconButton(
+                      onPressed: closeModal,
+                      icon: const Icon(Icons.close, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class WebButton extends StatelessWidget {
   final Function()? onPressed;

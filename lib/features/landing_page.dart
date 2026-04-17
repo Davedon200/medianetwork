@@ -18,6 +18,7 @@ class RhapsodyLandingPage extends StatefulWidget {
 class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
     with SingleTickerProviderStateMixin {
   bool showRegisterForm = false;
+  String? enteredEmail;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
@@ -48,6 +49,13 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
         });
       });
     }
+    if (path == '/resource') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          exploreDialog();
+        });
+      });
+    }
 
     _trackVisit();
   }
@@ -56,6 +64,28 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
     await FirebaseFirestore.instance.collection("analytics").doc("visits").set({
       "count": FieldValue.increment(1),
     }, SetOptions(merge: true));
+  }
+
+  Future<void> exploreDialog() async {
+    final result = await showEmailValidationDialog(
+      context,
+      (email) => enteredEmail = email,
+    );
+
+    if (!mounted || result == null) return;
+
+    switch (result) {
+      case EmailCheckResult.exists:
+        context.pushNamed(WebRoutes.explorepage);
+        break;
+
+      case EmailCheckResult.notExists:
+        setState(() {
+          showRegisterForm = true;
+          emailController.text = enteredEmail ?? '';
+        });
+        break;
+    }
   }
 
   Widget _buildDropdownField({
@@ -114,62 +144,174 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
     );
   }
 
-  Future<void> showEmailValidationDialog(BuildContext context) async {
+  Future<EmailCheckResult?> showEmailValidationDialog(
+    BuildContext context,
+    void Function(String email)? onEmailCaptured,
+  ) async {
     final TextEditingController emailController = TextEditingController();
     final bool isMobile = MediaQuery.of(context).size.width < 900;
     final formKey = GlobalKey<FormState>();
 
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text(
-            "Enter Email",
-            style: WebTextStyles.normal.copyWith(
-              fontSize: isMobile ? 14 : 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Form(
-            key: formKey,
-            child: TextFormField(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: "Enter your email",
-                hintStyle: WebTextStyles.normal.copyWith(color: Colors.grey),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Email is required";
-                }
-                final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                if (!emailRegex.hasMatch(value)) {
-                  return "Enter a valid email";
-                }
-                return null;
-              },
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
-            ),
-            WebButton(
-              decoration: boxDecoration,
-              textColor: Colors.white,
-              bodytext: "Proceed",
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  Navigator.pop(context);
+    bool isChecking = false;
+    bool notregistered = false;
 
-                  context.pushNamed(WebRoutes.explorepage);
-                }
-              },
-            ),
-          ],
+    return await showDialog<EmailCheckResult>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+
+              // ================= TITLE =================
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: [
+                  Text(
+                    "Email",
+                    style: WebTextStyles.subheading.copyWith(
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, -0.2),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: notregistered
+                        ? Text(
+                            "No account found with this email.",
+                            key: const ValueKey("error"),
+                            style: WebTextStyles.normal.copyWith(
+                              color: Colors.red,
+                            ),
+                          )
+                        : SizedBox(key: const ValueKey("empty")),
+                  ),
+                ],
+              ),
+
+              // ================= CONTENT =================
+              content: Form(
+                key: formKey,
+                child: TextFormField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: "Enter your email",
+                    hintStyle: WebTextStyles.normal.copyWith(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  style: WebTextStyles.normal,
+
+                  onChanged: (_) {
+                    if (notregistered) {
+                      setState(() {
+                        notregistered = false;
+                      });
+                    }
+                  },
+
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Email is required";
+                    }
+                    final emailRegex = RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    );
+                    if (!emailRegex.hasMatch(value)) {
+                      return "Enter a valid email";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+
+              // ================= ACTIONS (FIXED - NO ANIMATEDSWITCHER HERE) =================
+              actions: [
+                if (notregistered)
+                  WebButton(
+                    decoration: boxDecoration,
+                    textColor: Colors.white,
+                    bodytext: "Register Now",
+                    onPressed: () {
+                      Navigator.pop(dialogContext, EmailCheckResult.notExists);
+                    },
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: isChecking
+                            ? null
+                            : () => Navigator.pop(dialogContext),
+                        child: const Text("Cancel"),
+                      ),
+                      isChecking
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : WebButton(
+                              decoration: boxDecoration,
+                              textColor: Colors.white,
+                              bodytext: "Proceed",
+                              onPressed: () async {
+                                if (!formKey.currentState!.validate()) return;
+
+                                setState(() => isChecking = true);
+
+                                try {
+                                  final email = emailController.text
+                                      .trim()
+                                      .toLowerCase();
+
+                                  final doc = await FirebaseFirestore.instance
+                                      .collection("registrations")
+                                      .doc(email)
+                                      .get();
+
+                                  if (!dialogContext.mounted) return;
+
+                                  if (doc.exists) {
+                                    onEmailCaptured?.call(email);
+                                    Navigator.pop(
+                                      dialogContext,
+                                      EmailCheckResult.exists,
+                                    );
+
+                                    context.pushNamed(WebRoutes.explorepage);
+                                  } else {
+                                    setState(() {
+                                      notregistered = true;
+                                      isChecking = false;
+                                    });
+                                  }
+                                } catch (e) {
+                                  setState(() => isChecking = false);
+                                }
+                              },
+                            ),
+                    ],
+                  ),
+              ],
+            );
+          },
         );
       },
     );
@@ -349,7 +491,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                     ),
 
                     TextButton(
-                      onPressed: () => showEmailValidationDialog(context),
+                      onPressed: () => exploreDialog(),
                       child: const Text(
                         "Explore Network",
                         style: TextStyle(color: Colors.white70),
@@ -761,6 +903,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                           _clearForm();
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
+                          context.pushNamed(WebRoutes.explorepage);
                         },
                         child: const Text(
                           "Continue",
@@ -993,7 +1136,9 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                               });
                             },
                             selectedColor: Colors.deepPurpleAccent,
-                            backgroundColor: Colors.white.withOpacity(0.1),
+                            backgroundColor: Colors.white.withValues(
+                              alpha: 0.1,
+                            ),
                             labelStyle: TextStyle(
                               color: selected ? Colors.white : Colors.white70,
                             ),
@@ -1012,32 +1157,19 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                               style: TextStyle(color: Colors.deepPurpleAccent),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: isLoading ? null : _submitForm,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurpleAccent,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 40,
-                                vertical: 16,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : const Text(
-                                    "Submit",
-                                    style: TextStyle(color: Colors.white),
+                          isLoading
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.deepPurpleAccent,
                                   ),
-                          ),
+                                )
+                              : WebButton(
+                                  decoration: boxDecoration,
+                                  textColor: Colors.white,
+                                  onPressed: isLoading ? null : _submitForm,
+                                  bodytext: "Submit",
+                                ),
                         ],
                       ),
                     ],
