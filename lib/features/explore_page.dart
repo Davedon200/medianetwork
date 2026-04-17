@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:media_network/model/web_models.dart';
+import 'package:media_network/routes.dart';
+import 'package:media_network/widgets/extension.dart';
 import 'package:media_network/widgets/textstyles.dart';
 import 'package:media_network/widgets/widget.dart';
 
@@ -71,7 +73,7 @@ class ExplorePage extends StatelessWidget {
                             ),
                           ),
 
-                          /// GRID VIEW (WEB STYLE)
+                          /// GRID VIEW (RESPONSIVE)
                           StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('media')
@@ -85,16 +87,33 @@ class ExplorePage extends StatelessWidget {
 
                               final items = snapshot.data!.docs;
 
+                              final width = MediaQuery.of(context).size.width;
+
+                              /// RESPONSIVE BREAKPOINTS
+                              int crossAxisCount;
+                              double childAspectRatio;
+
+                              if (width < 600) {
+                                crossAxisCount = 1;
+                                childAspectRatio = 1.2; // 🔥 shorter cards
+                              } else if (width < 900) {
+                                crossAxisCount = 3;
+                                childAspectRatio = 0.9;
+                              } else {
+                                crossAxisCount = 4;
+                                childAspectRatio = 0.9;
+                              }
+
                               return GridView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 padding: const EdgeInsets.all(16),
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: crossAxisCount,
                                       mainAxisSpacing: 20,
                                       crossAxisSpacing: 20,
-                                      childAspectRatio: 0.9,
+                                      childAspectRatio: childAspectRatio,
                                     ),
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
@@ -104,12 +123,10 @@ class ExplorePage extends StatelessWidget {
 
                                   return MediaCard(
                                     item: MediaItem(
-                                      // id: items[index].id,
                                       title: data['title'],
                                       url: data['url'],
                                       thumbnail: data['thumbnail'],
                                       type: data['type'],
-                                      // downloads: data['downloads'] ?? 0,
                                     ),
                                   );
                                 },
@@ -154,51 +171,130 @@ class TopNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isMobile = MediaQuery.of(context).size.width < 900;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       decoration: const BoxDecoration(color: Color(0xFF020617)),
-      child: Row(
-        children: [
-          /// LOGO + NAME
-          Row(
-            children: [
-              Image.asset(
-                "assets/images/rnm.png",
-                fit: BoxFit.scaleDown,
-                height: 40,
-                width: 40,
-              ),
-              SizedBox(width: 10),
-              Text(
+      child: isMobile ? _mobileLayout(context) : _webLayout(context),
+    );
+  }
+
+  /// ================= MOBILE VIEW =================
+  Widget _mobileLayout(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// TOP BAR (LOGO + NAME + MENU ICON)
+        Row(
+          children: [
+            Image.asset(
+              "assets/images/rnm.png",
+              fit: BoxFit.scaleDown,
+              height: 40,
+              width: 40,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
                 "Rhapsody Media Network",
-                textAlign: isMobile ? TextAlign.center : TextAlign.left,
                 style: WebTextStyles.heading.copyWith(
-                  fontSize: isMobile ? 12 : 20,
+                  fontSize: 16,
                   height: 1.1,
                   color: Colors.white,
                 ),
               ),
-            ],
-          ),
+            ),
 
-          const Spacer(),
+            /// MENU DROPDOWN
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.menu, color: Colors.white),
+              color: const Color(0xFF020617),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  onTap: () {
+                    context.pushNamedAndRemoveUntil(WebRoutes.home);
+                  },
+                  value: "Home",
+                  child: Text("Home", style: TextStyle(color: Colors.white)),
+                ),
+                PopupMenuItem(
+                  value: "Resources",
+                  child: Text(
+                    "Resources",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: "Creators",
+                  child: Text(
+                    "Creators",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: "Projects",
+                  child: Text(
+                    "Projects",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: "Analytics",
+                  child: Text(
+                    "Analytics",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-          /// NAV ITEMS (WEB STYLE)
-          Row(
-            children: const [
-              NavItem("Home"),
-              NavItem("Resources"),
-              NavItem("Creators"),
-              NavItem("Projects"),
-              NavItem("Analytics"),
-              SizedBox(width: 20),
-              Icon(Icons.search, color: Colors.white70),
-              SizedBox(width: 20),
-              CircleAvatar(radius: 14),
-            ],
-          ),
-        ],
-      ),
+  /// ================= WEB / FOLD VIEW =================
+  Widget _webLayout(BuildContext context) {
+    return Row(
+      children: [
+        /// LOGO + NAME
+        Row(
+          children: [
+            Image.asset(
+              "assets/images/rnm.png",
+              fit: BoxFit.scaleDown,
+              height: 40,
+              width: 40,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              "Rhapsody Media Network",
+              style: WebTextStyles.heading.copyWith(
+                fontSize: 20,
+                height: 1.1,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+
+        const Spacer(),
+
+        /// NAV ITEMS (WEB STYLE)
+        Row(
+          children: const [
+            NavItem("Home"),
+            NavItem("Resources"),
+            NavItem("Creators"),
+            NavItem("Projects"),
+            NavItem("Analytics"),
+            SizedBox(width: 20),
+            Icon(Icons.search, color: Colors.white70),
+            SizedBox(width: 20),
+            CircleAvatar(radius: 14),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -221,137 +317,225 @@ class HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width < 900;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(36),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        color: Color(0xFF020617),
-        // gradient: LinearGradient(
-        //   colors: [
-        //     const Color(0xFF0F172A).withValues(alpha: 0.95),
-        //     const Color(0xFF1E293B).withValues(alpha: 0.85),
-        //   ],
-        // ),
+        color: const Color(0xFF020617),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          /// LEFT CONTENT
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /// LIVE BADGE
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFF2DD4BF).withValues(alpha: 0.4),
-                    ),
-                  ),
-                  child: const Text(
-                    "● Global Network Active",
-                    style: TextStyle(
-                      color: Color(0xFF2DD4BF),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+      child: isMobile ? _mobileLayout(context) : _webLayout(context),
+    );
+  }
 
-                const SizedBox(height: 16),
-
-                /// HEADLINE
-                const Text(
-                  "A Global Media Network for Creators",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
-                    height: 1.2,
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                /// SUBTEXT
-                const Text(
-                  "Connect, collaborate, and distribute creative content across a living ecosystem of media professionals, studios, and independent creators worldwide.",
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                    height: 1.5,
-                  ),
-                ),
-
-                const SizedBox(height: 28),
-
-                /// 📊 MINI DASHBOARD STATS
-                Row(
-                  children: const [
-                    _HeroStat(title: "Creators", value: "100+"),
-                    SizedBox(width: 24),
-                    _HeroStat(title: "Assets", value: "300+"),
-                    SizedBox(width: 24),
-                    _HeroStat(title: "Countries", value: "124"),
-                    SizedBox(width: 24),
-                    _HeroStat(title: "Live Projects", value: "100+"),
-                  ],
-                ),
-              ],
+  /// ================= MOBILE VIEW =================
+  Widget _mobileLayout(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        /// LIVE BADGE
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: const Color(0xFF2DD4BF).withValues(alpha: 0.4),
             ),
           ),
+          child: const Text(
+            "● Global Network Active",
+            style: TextStyle(
+              color: Color(0xFF2DD4BF),
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
 
-          const SizedBox(width: 40),
+        const SizedBox(height: 51),
 
-          /// RIGHT VISUAL (PLAY ICON)
-          Stack(
-            alignment: Alignment.center,
+        /// VISUAL CENTERED
+        Center(child: _heroVisual()),
+        const SizedBox(height: 36),
+
+        /// HEADLINE (smaller for mobile only)
+        const Text(
+          "A Global Media Network for Creators",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            height: 1.2,
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        /// SUBTEXT
+        const Text(
+          "Connect, collaborate, and distribute creative content across a living ecosystem of media professionals, studios, and independent creators worldwide.",
+          style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
+        ),
+
+        const SizedBox(height: 28),
+
+        /// STATS (wrap for small screens)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            _HeroStat(title: "Creators", value: "100+"),
+            _HeroStat(title: "Assets", value: "300+"),
+            _HeroStat(title: "Countries", value: "124"),
+            _HeroStat(title: "Live Projects", value: "100+"),
+          ],
+        ),
+
+        const SizedBox(height: 30),
+      ],
+    );
+  }
+
+  /// ================= WEB / FOLD VIEW =================
+  Widget _webLayout(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// 🔵 GLOW BACKDROP
               Container(
-                width: 160,
-                height: 160,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF6A5AE0).withValues(alpha: 0.15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF6A5AE0).withValues(alpha: 0.25),
-                      blurRadius: 40,
-                      spreadRadius: 10,
-                    ),
-                  ],
+                  color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: const Color(0xFF2DD4BF).withValues(alpha: 0.4),
+                  ),
+                ),
+                child: const Text(
+                  "● Global Network Active",
+                  style: TextStyle(
+                    color: Color(0xFF2DD4BF),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-
-              /// 🟢 INNER LAYER
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF2DD4BF).withValues(alpha: 0.10),
+              const SizedBox(height: 16),
+              const Text(
+                "A Global Media Network for Creators",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 34,
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
                 ),
               ),
-
-              /// ▶️ ICON
-              const Icon(
-                Icons.play_circle_fill,
-                size: 100,
-                color: Colors.white70,
+              const SizedBox(height: 12),
+              const Text(
+                "Connect, collaborate, and distribute creative content across a living ecosystem of media professionals, studios, and independent creators worldwide.",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: 28),
+              Row(
+                children: const [
+                  _HeroStat(title: "Creators", value: "100+"),
+                  SizedBox(width: 24),
+                  _HeroStat(title: "Assets", value: "300+"),
+                  SizedBox(width: 24),
+                  _HeroStat(title: "Countries", value: "124"),
+                  SizedBox(width: 24),
+                  _HeroStat(title: "Live Projects", value: "100+"),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: 40),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 160,
+              height: 160,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF6A5AE0).withValues(alpha: 0.15),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF6A5AE0).withValues(alpha: 0.25),
+                    blurRadius: 40,
+                    spreadRadius: 10,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF2DD4BF).withValues(alpha: 0.10),
+              ),
+            ),
+            const Icon(
+              Icons.play_circle_fill,
+              size: 100,
+              color: Colors.white70,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// ================= SHARED VISUAL =================
+  Widget _heroVisual() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        /// 🔵 GLOW BACKDROP
+        Container(
+          width: 160,
+          height: 160,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0xFF6A5AE0).withValues(alpha: 0.15),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF6A5AE0).withValues(alpha: 0.25),
+                blurRadius: 40,
+                spreadRadius: 10,
+              ),
+            ],
+          ),
+        ),
+
+        /// 🟢 INNER LAYER
+        Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0xFF2DD4BF).withValues(alpha: 0.10),
+          ),
+        ),
+
+        /// ▶️ ICON
+        const Icon(Icons.play_circle_fill, size: 100, color: Colors.white70),
+      ],
     );
   }
 }

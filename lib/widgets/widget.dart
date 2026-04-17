@@ -12,6 +12,9 @@ class MediaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final bool isMobile = width < 600;
+
     final boxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(32),
       gradient: const LinearGradient(
@@ -30,52 +33,112 @@ class MediaCard extends StatelessWidget {
       margin: const EdgeInsets.all(8),
       decoration: boxDecoration,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(isMobile ? 10 : 16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: CachedNetworkImage(
-                  imageUrl: item.thumbnail,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  fadeInDuration: const Duration(milliseconds: 300),
-                  placeholder: (context, url) =>
-                      Container(color: const Color(0xFF1E293B)),
-                  errorWidget: (context, url, error) => Container(
-                    color: const Color(0xFF0F172A),
-                    child: const Icon(Icons.error, color: Colors.white54),
+            /// IMAGE
+            isMobile
+                ? SizedBox(
+                    height: 250, // 🔥 controlled mobile image height
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: CachedNetworkImage(
+                        imageUrl: item.thumbnail,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        fadeInDuration: const Duration(milliseconds: 300),
+                        placeholder: (context, url) =>
+                            Container(color: const Color(0xFF1E293B)),
+                        errorWidget: (context, url, error) => Container(
+                          color: const Color(0xFF0F172A),
+                          child: const Icon(Icons.error, color: Colors.white54),
+                        ),
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    flex: 4,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: CachedNetworkImage(
+                        imageUrl: item.thumbnail,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        fadeInDuration: const Duration(milliseconds: 300),
+                        placeholder: (context, url) =>
+                            Container(color: const Color(0xFF1E293B)),
+                        errorWidget: (context, url, error) => Container(
+                          color: const Color(0xFF0F172A),
+                          child: const Icon(Icons.error, color: Colors.white54),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+
+            SizedBox(height: isMobile ? 6 : 10),
+
+            /// TITLE
+            Text(
+              item.title,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: isMobile ? 18 : 14,
               ),
             ),
-            const SizedBox(height: 10),
-            Text(item.title, style: const TextStyle(color: Colors.white)),
-            const SizedBox(height: 10),
 
+            SizedBox(height: isMobile ? 6 : 10),
+
+            /// BUTTON ROW (FIXED: NO WRAP, NO OVERFLOW)
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierColor: Colors.black.withValues(alpha: 0.8),
-                      builder: (_) => PreviewModal(item: item),
-                    );
-                  },
-                  child: const Text("View"),
+                /// VIEW BUTTON
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 6 : 12,
+                        vertical: isMobile ? 6 : 10,
+                      ),
+                      textStyle: TextStyle(fontSize: isMobile ? 16 : 12),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierColor: Colors.black.withValues(alpha: 0.8),
+                        builder: (_) => PreviewModal(item: item),
+                      );
+                    },
+                    child: const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text("View"),
+                    ),
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await DownloadService.downloadFile(item.url, item.title);
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Download started")),
-                    );
-                  },
-                  child: const Text("Download"),
+                SizedBox(width: isMobile ? 6 : 12),
+
+                /// DOWNLOAD BUTTON
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 6 : 12,
+                        vertical: isMobile ? 6 : 10,
+                      ),
+                      textStyle: TextStyle(fontSize: isMobile ? 16 : 12),
+                    ),
+                    onPressed: () {
+                      DownloadService.downloadFile(item.url, item.title);
+                    },
+                    child: const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text("Download"),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -98,18 +161,21 @@ class PreviewModal extends StatefulWidget {
 class _PreviewModalState extends State<PreviewModal>
     with SingleTickerProviderStateMixin {
   VideoPlayerController? controller;
+
   late AnimationController _animationController;
   late Animation<double> _scale;
   late Animation<double> _fade;
+
+  bool _videoReady = false;
 
   @override
   void initState() {
     super.initState();
 
-    /// Animation setup
+    /// FAST ANIMATION INIT ONLY
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 250),
     );
 
     _scale = CurvedAnimation(
@@ -121,19 +187,36 @@ class _PreviewModalState extends State<PreviewModal>
 
     _animationController.forward();
 
-    /// Video init
+    /// DEFER VIDEO INIT (IMPORTANT SPEED FIX)
     if (widget.item.type == "video") {
-      if (widget.item.url.isNotEmpty) {
-        final uri = Uri.tryParse(widget.item.url);
-        if (uri != null) {
-          controller = VideoPlayerController.networkUrl(uri)
-            ..initialize().then((_) {
-              setState(() {});
-              controller!.play();
-            });
-        }
-      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _initVideo();
+      });
     }
+  }
+
+  Future<void> _initVideo() async {
+    final uri = Uri.tryParse(widget.item.url);
+    if (uri == null) return;
+
+    controller = VideoPlayerController.networkUrl(uri);
+
+    await controller!.initialize();
+
+    controller!
+      ..setLooping(true)
+      ..setVolume(1.0);
+
+    if (!mounted) return;
+
+    setState(() {
+      _videoReady = true;
+    });
+
+    /// SMALL DELAY = HUGE SMOOTHNESS IMPROVEMENT
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    controller!.play();
   }
 
   @override
@@ -143,6 +226,14 @@ class _PreviewModalState extends State<PreviewModal>
     super.dispose();
   }
 
+  void togglePlayPause() {
+    if (controller == null || !_videoReady) return;
+
+    setState(() {
+      controller!.value.isPlaying ? controller!.pause() : controller!.play();
+    });
+  }
+
   void closeModal() async {
     await _animationController.reverse();
     if (mounted) Navigator.pop(context);
@@ -150,6 +241,10 @@ class _PreviewModalState extends State<PreviewModal>
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final bool isMobile = width < 600;
+
     return FadeTransition(
       opacity: _fade,
       child: Center(
@@ -158,27 +253,66 @@ class _PreviewModalState extends State<PreviewModal>
           child: Material(
             color: Colors.transparent,
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.7,
-              height: MediaQuery.of(context).size.height * 0.7,
+              width: isMobile ? width * 0.95 : width * 0.7,
+              height: isMobile ? height * 0.6 : height * 0.7,
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(24),
-              ),
               child: Stack(
                 children: [
                   /// CONTENT
                   Center(
                     child: widget.item.type == "video"
-                        ? controller != null && controller!.value.isInitialized
-                              ? AspectRatio(
+                        ? !_videoReady
+                              ? const CircularProgressIndicator()
+                              : AspectRatio(
                                   aspectRatio: controller!.value.aspectRatio,
-                                  child: VideoPlayer(controller!),
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      /// VIDEO (never rebuilds)
+                                      VideoPlayer(controller!),
+
+                                      /// TAP LAYER
+                                      Positioned.fill(
+                                        child: GestureDetector(
+                                          onTap: togglePlayPause,
+                                          behavior: HitTestBehavior.opaque,
+                                        ),
+                                      ),
+
+                                      /// LIGHTWEIGHT LISTENER (ICON ONLY)
+                                      ValueListenableBuilder<VideoPlayerValue>(
+                                        valueListenable: controller!,
+                                        builder: (context, value, child) {
+                                          if (value.isBuffering) {
+                                            return const CircularProgressIndicator();
+                                          }
+
+                                          if (value.isPlaying) {
+                                            return const SizedBox.shrink(); // 🔥 nothing rendered
+                                          }
+
+                                          return const Icon(
+                                            Icons.play_circle_fill,
+                                            size: 70,
+                                            color: Colors.white70,
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 )
-                              : const CircularProgressIndicator()
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image.network(widget.item.url),
+                            child: Image.network(
+                              widget.item.url,
+                              fit: BoxFit.contain,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            ),
                           ),
                   ),
 
