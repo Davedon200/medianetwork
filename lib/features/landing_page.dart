@@ -513,7 +513,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                     ),
                     WebButton(
                       decoration: BoxDecoration(
-                        color: Colors.yellow,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(32),
                       ),
                       textColor: Colors.black,
