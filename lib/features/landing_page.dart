@@ -28,6 +28,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
   final TextEditingController ceZoneController = TextEditingController();
 
   final List<String> selectedSkills = [];
+  final ScrollController _scrollController = ScrollController();
 
   String? selectedTitle;
   String? selectedNationality;
@@ -53,6 +54,13 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
           exploreDialog();
+        });
+      });
+    }
+    if (path == '/admin') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          AdminDashboard();
         });
       });
     }
@@ -170,7 +178,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                 spacing: 4,
                 children: [
                   Text(
-                    "Email",
+                    notregistered ? "Register Now" : "Enter Registered Email",
                     style: WebTextStyles.subheading.copyWith(
                       color: Colors.black,
                     ),
@@ -243,13 +251,26 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
               // ================= ACTIONS (FIXED - NO ANIMATEDSWITCHER HERE) =================
               actions: [
                 if (notregistered)
-                  WebButton(
-                    decoration: boxDecoration,
-                    textColor: Colors.white,
-                    bodytext: "Register Now",
-                    onPressed: () {
-                      Navigator.pop(dialogContext, EmailCheckResult.notExists);
-                    },
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: isChecking
+                            ? null
+                            : () => Navigator.pop(dialogContext),
+                        child: const Text("Cancel"),
+                      ),
+                      WebButton(
+                        decoration: boxDecoration,
+                        textColor: Colors.white,
+                        bodytext: "Register Now",
+                        onPressed: () {
+                          Navigator.pop(
+                            dialogContext,
+                            EmailCheckResult.notExists,
+                          );
+                        },
+                      ),
+                    ],
                   )
                 else
                   Row(
@@ -350,6 +371,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
           ),
           // Main content
           SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               children: [
                 _buildHeroSection(isMobile),
@@ -489,13 +511,14 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                       textColor: Colors.white,
                       onPressed: () => setState(() => showRegisterForm = true),
                     ),
-
-                    TextButton(
-                      onPressed: () => exploreDialog(),
-                      child: const Text(
-                        "Explore Network",
-                        style: TextStyle(color: Colors.white70),
+                    WebButton(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(32),
                       ),
+                      textColor: Colors.black,
+                      onPressed: () => exploreDialog(),
+                      bodytext: "Explore Network",
                     ),
                   ],
                 ),
@@ -503,20 +526,33 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                 const SizedBox(height: 25),
 
                 /// SCROLL HINT
-                Column(
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Colors.white.withOpacity(0.5),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 800),
+                  opacity: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      _scrollController.animateTo(
+                        _scrollController.position.maxScrollExtent,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                        Text(
+                          "Scroll to About",
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Scroll to explore",
-                      style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -607,15 +643,6 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
               Text("About", style: TextStyle(color: Colors.white54)),
               Text("Programs", style: TextStyle(color: Colors.white54)),
               Text("Contact", style: TextStyle(color: Colors.white54)),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const AdminDashboard()),
-                  );
-                },
-                child: Text("Admin", style: TextStyle(color: Colors.white54)),
-              ),
               Text("Privacy Policy", style: TextStyle(color: Colors.white54)),
             ],
           ),

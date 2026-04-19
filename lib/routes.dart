@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:media_network/admin/admin_dashboard.dart';
 import 'package:media_network/features/explore_page.dart';
 import 'package:media_network/features/landing_page.dart';
 
@@ -12,6 +13,7 @@ class WebRoutes {
 
   static const String home = "/";
   static const String explorepage = "/explorepage";
+  static const String admin = "/admin";
 
   Route<dynamic>? generateRoute(RouteSettings routeSettings) {
     final routeName = routeSettings.name;
@@ -24,6 +26,8 @@ class WebRoutes {
         );
       case WebRoutes.explorepage:
         return MaterialPageRoute(builder: (context) => const ExplorePage());
+      case WebRoutes.admin:
+        return MaterialPageRoute(builder: (context) => const AdminDashboard());
     }
   }
 }

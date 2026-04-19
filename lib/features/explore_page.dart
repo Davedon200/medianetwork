@@ -194,13 +194,18 @@ class TopNavBar extends StatelessWidget {
               width: 40,
             ),
             const SizedBox(width: 10),
-            Expanded(
+            ShaderMask(
+              shaderCallback: (bounds) =>
+                  const LinearGradient(
+                    colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
+                  ).createShader(
+                    Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                  ),
               child: Text(
                 "Rhapsody Media Network",
                 style: WebTextStyles.heading.copyWith(
-                  fontSize: 16,
+                  fontSize: 14,
                   height: 1.1,
-                  color: Colors.white,
                 ),
               ),
             ),
@@ -267,12 +272,19 @@ class TopNavBar extends StatelessWidget {
               width: 40,
             ),
             const SizedBox(width: 10),
-            Text(
-              "Rhapsody Media Network",
-              style: WebTextStyles.heading.copyWith(
-                fontSize: 20,
-                height: 1.1,
-                color: Colors.white,
+            ShaderMask(
+              shaderCallback: (bounds) =>
+                  const LinearGradient(
+                    colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
+                  ).createShader(
+                    Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                  ),
+              child: Text(
+                "Rhapsody Media Network",
+                style: WebTextStyles.heading.copyWith(
+                  fontSize: 19,
+                  height: 1.1,
+                ),
               ),
             ),
           ],

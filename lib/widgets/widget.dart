@@ -114,7 +114,14 @@ class MediaCard extends StatelessWidget {
                     },
                     child: const FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: Text("View"),
+                      child: Text(
+                        "View",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -122,27 +129,114 @@ class MediaCard extends StatelessWidget {
                 SizedBox(width: isMobile ? 6 : 12),
 
                 /// DOWNLOAD BUTTON
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isMobile ? 6 : 12,
-                        vertical: isMobile ? 6 : 10,
-                      ),
-                      textStyle: TextStyle(fontSize: isMobile ? 16 : 12),
-                    ),
-                    onPressed: () {
-                      DownloadService.downloadFile(item.url, item.title);
-                    },
-                    child: const FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text("Download"),
-                    ),
-                  ),
+                DownloadButton(
+                  url: item.url,
+                  title: item.title,
+                  isMobile: isMobile,
                 ),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DownloadButton extends StatefulWidget {
+  final String url;
+  final String title;
+  final bool isMobile;
+
+  const DownloadButton({
+    super.key,
+    required this.url,
+    required this.title,
+    required this.isMobile,
+  });
+
+  @override
+  State<DownloadButton> createState() => _DownloadButtonState();
+}
+
+class _DownloadButtonState extends State<DownloadButton> {
+  double progress = 0;
+  bool isDownloading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero, // required for full fill effect
+          textStyle: TextStyle(fontSize: widget.isMobile ? 16 : 12),
+        ),
+        onPressed: isDownloading
+            ? null
+            : () async {
+                setState(() {
+                  isDownloading = true;
+                  progress = 0;
+                });
+
+                await DownloadService.downloadFile(widget.url, widget.title, (
+                  p,
+                ) {
+                  setState(() {
+                    progress = p;
+                  });
+                });
+
+                setState(() {
+                  isDownloading = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Download completed")),
+                );
+              },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
+            children: [
+              /// 🔵 PROGRESS FILL BACKGROUND
+              Positioned.fill(
+                child: FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: isDownloading ? progress : 0,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF2DD4BF), Color(0xFF6A5AE0)],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              /// 🔤 TEXT LAYER
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF020617).withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  horizontal: widget.isMobile ? 6 : 12,
+                  vertical: widget.isMobile ? 6 : 10,
+                ),
+                child: Text(
+                  isDownloading ? "${(progress * 100).toInt()}%" : "Download",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: widget.isMobile ? 14 : 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
