@@ -622,7 +622,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
           const Text(
             "Rhapsody Media Network",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.orange,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),

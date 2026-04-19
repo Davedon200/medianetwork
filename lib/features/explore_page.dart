@@ -86,34 +86,54 @@ class ExplorePage extends StatelessWidget {
                               }
 
                               final items = snapshot.data!.docs;
-
                               final width = MediaQuery.of(context).size.width;
 
-                              /// RESPONSIVE BREAKPOINTS
-                              int crossAxisCount;
-                              double childAspectRatio;
+                              final bool isMobile = width < 600;
+                              final bool isTablet = width >= 600 && width < 900;
 
-                              if (width < 600) {
-                                crossAxisCount = 1;
-                                childAspectRatio = 1.2; // 🔥 shorter cards
-                              } else if (width < 900) {
-                                crossAxisCount = 3;
-                                childAspectRatio = 0.9;
-                              } else {
-                                crossAxisCount = 4;
-                                childAspectRatio = 0.9;
+                              /// 📱 MOBILE → LISTVIEW
+                              if (isMobile) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.all(16),
+                                  itemCount: items.length,
+                                  itemBuilder: (context, index) {
+                                    final data = Map<String, dynamic>.from(
+                                      items[index].data(),
+                                    );
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: 16,
+                                      ),
+                                      child: SizedBox(
+                                        height: 320,
+                                        child: MediaCard(
+                                          item: MediaItem(
+                                            title: data['title'],
+                                            url: data['url'],
+                                            thumbnail: data['thumbnail'],
+                                            type: data['type'],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
                               }
 
+                              /// 📟 TABLET + DESKTOP → GRIDVIEW
                               return GridView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 padding: const EdgeInsets.all(16),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: crossAxisCount,
+                                      crossAxisCount: isTablet ? 3 : 4,
                                       mainAxisSpacing: 20,
                                       crossAxisSpacing: 20,
-                                      childAspectRatio: childAspectRatio,
+                                      childAspectRatio: isTablet ? 0.8 : 0.9,
                                     ),
                                 itemCount: items.length,
                                 itemBuilder: (context, index) {
@@ -186,6 +206,7 @@ class TopNavBar extends StatelessWidget {
       children: [
         /// TOP BAR (LOGO + NAME + MENU ICON)
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset(
               "assets/images/rnm.png",
@@ -193,14 +214,11 @@ class TopNavBar extends StatelessWidget {
               height: 40,
               width: 40,
             ),
-            const SizedBox(width: 10),
+
             ShaderMask(
-              shaderCallback: (bounds) =>
-                  const LinearGradient(
-                    colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
-                  ).createShader(
-                    Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                  ),
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
+              ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
               child: Text(
                 "Rhapsody Media Network",
                 style: WebTextStyles.heading.copyWith(
@@ -273,12 +291,9 @@ class TopNavBar extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             ShaderMask(
-              shaderCallback: (bounds) =>
-                  const LinearGradient(
-                    colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
-                  ).createShader(
-                    Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                  ),
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
+              ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
               child: Text(
                 "Rhapsody Media Network",
                 style: WebTextStyles.heading.copyWith(

@@ -36,11 +36,12 @@ class MediaCard extends StatelessWidget {
         padding: EdgeInsets.all(isMobile ? 10 : 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          
           children: [
             /// IMAGE
             isMobile
-                ? SizedBox(
-                    height: 250, // 🔥 controlled mobile image height
+                ? Flexible(
+                    flex: 3, // 🔥 controlled mobile image height
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: CachedNetworkImage(
@@ -76,7 +77,7 @@ class MediaCard extends StatelessWidget {
                     ),
                   ),
 
-            SizedBox(height: isMobile ? 6 : 10),
+            SizedBox(height: isMobile ? 4 : 10),
 
             /// TITLE
             Text(
@@ -86,7 +87,7 @@ class MediaCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: isMobile ? 18 : 14,
+                fontSize: isMobile ? 14 : 14,
               ),
             ),
 
