@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'package:media_network/firebase_options.dart';
-import 'package:media_network/routes.dart';
+import 'package:rhapsody_media_network/firebase_options.dart';
+import 'package:rhapsody_media_network/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +27,7 @@ class RhapsodyMediaNetworkApp extends StatelessWidget {
         ),
         fontFamily: 'Inter',
       ),
-      initialRoute: WebRoutes.home,
+      initialRoute: WebRoutes.getstartedpage,
       onGenerateRoute: WebRoutes.instance.generateRoute,
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/widgets/widget.dart';
+import 'package:rhapsody_media_network/widgets/widget.dart';
 
 class AnimatedFooter extends StatefulWidget {
   const AnimatedFooter({super.key});

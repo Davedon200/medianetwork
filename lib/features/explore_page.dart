@@ -1,182 +1,373 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:media_network/model/web_models.dart';
-import 'package:media_network/routes.dart';
-import 'package:media_network/widgets/extension.dart';
-import 'package:media_network/widgets/textstyles.dart';
-import 'package:media_network/widgets/widget.dart';
+import 'package:flutter/services.dart';
+import 'package:rhapsody_media_network/features/widget/top_nav.dart';
+import 'package:rhapsody_media_network/gen/assets.gen.dart';
+import 'package:rhapsody_media_network/widgets/constant.dart';
+import 'package:rhapsody_media_network/widgets/textstyles.dart';
+import 'package:rhapsody_media_network/widgets/widget.dart';
+import 'package:video_player/video_player.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<MediaItem> items = [
-      MediaItem(
-        title: "Sample Video",
-        url:
-            "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
-        thumbnail:
-            "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
-        type: "video",
-      ),
-      MediaItem(
-        title: "Sample Image",
-        url: "https://picsum.photos/800",
-        thumbnail: "https://picsum.photos/300",
-        type: "image",
-      ),
-    ];
-
     return Scaffold(
       body: Stack(
         children: [
+          // 🌌 Background Gradient
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF0F172A), Color.fromARGB(255, 31, 47, 85)],
+                colors: [
+                  Color(0xFF020617),
+                  Color(0xFF0F172A),
+                  Color(0xFF1E293B),
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
             ),
           ),
 
-          Column(
-            children: [
-              const TopNavBar(),
+          // 🌐 Main Content
+          SingleChildScrollView(
+            child: Column(
+              children: const [
+                TopNavBar(),
+                HeroSection(),
+                FeaturedMediaSection(),
+                TrendingSection(),
+                ShortFilmsSection(),
+                MinistriesSection(),
+                NewsSection(),
+                GlobalImpactSection(),
+                CTASection(),
+                FooterSection(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1200),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 30),
+Widget _sectionWrapper({required String title, required Widget child}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 20),
+        child,
+      ],
+    ),
+  );
+}
 
-                          /// HERO / ABOUT SECTION
-                          const HeroSection(),
+Widget _glassContainer({required Widget child}) {
+  return Container(
+    margin: const EdgeInsets.all(40),
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.deepPurple),
+    ),
+    child: child,
+  );
+}
 
-                          const SizedBox(height: 40),
+class ShortFilmsSection extends StatelessWidget {
+  const ShortFilmsSection({super.key});
 
-                          /// RESOURCE SECTION TITLE
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              "Resource Library",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-
-                          /// GRID VIEW (RESPONSIVE)
-                          StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('media')
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              final items = snapshot.data!.docs;
-                              final width = MediaQuery.of(context).size.width;
-
-                              final bool isMobile = width < 600;
-                              final bool isTablet = width >= 600 && width < 900;
-
-                              /// 📱 MOBILE → LISTVIEW
-                              if (isMobile) {
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.all(16),
-                                  itemCount: items.length,
-                                  itemBuilder: (context, index) {
-                                    final data = Map<String, dynamic>.from(
-                                      items[index].data(),
-                                    );
-
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 16,
-                                      ),
-                                      child: SizedBox(
-                                        height: 320,
-                                        child: MediaCard(
-                                          item: MediaItem(
-                                            title: data['title'],
-                                            url: data['url'],
-                                            thumbnail: data['thumbnail'],
-                                            type: data['type'],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
-
-                              /// 📟 TABLET + DESKTOP → GRIDVIEW
-                              return GridView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.all(16),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: isTablet ? 3 : 4,
-                                      mainAxisSpacing: 20,
-                                      crossAxisSpacing: 20,
-                                      childAspectRatio: isTablet ? 0.8 : 0.9,
-                                    ),
-                                itemCount: items.length,
-                                itemBuilder: (context, index) {
-                                  final data = Map<String, dynamic>.from(
-                                    items[index].data(),
-                                  );
-
-                                  return MediaCard(
-                                    item: MediaItem(
-                                      title: data['title'],
-                                      url: data['url'],
-                                      thumbnail: data['thumbnail'],
-                                      type: data['type'],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-
-                          // GridView.builder(
-                          //   shrinkWrap: true,
-                          //   physics: const NeverScrollableScrollPhysics(),
-                          //   padding: const EdgeInsets.all(16),
-                          //   gridDelegate:
-                          //       const SliverGridDelegateWithFixedCrossAxisCount(
-                          //         crossAxisCount: 4, // web layout
-                          //         mainAxisSpacing: 20,
-                          //         crossAxisSpacing: 20,
-                          //         childAspectRatio: 0.9,
-                          //       ),
-                          //   itemCount: items.length,
-                          //   itemBuilder: (context, index) {
-                          //     return MediaCard(item: items[index]);
-                          //   },
-                          // ),
-                          const SizedBox(height: 60),
-                        ],
-                      ),
+  @override
+  Widget build(BuildContext context) {
+    return _sectionWrapper(
+      title: "Short Films & Originals",
+      child: SizedBox(
+        height: 260,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 6,
+          itemBuilder: (_, index) {
+            return Container(
+              width: 420,
+              margin: const EdgeInsets.only(right: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  image: AssetImage(Assets.images.mediaBoostChallenge.path),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    colors: [Colors.black.withOpacity(0.8), Colors.transparent],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
+                ),
+                child: const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "The Calling",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class HeroSection extends StatefulWidget {
+  const HeroSection({super.key});
+
+  @override
+  State<HeroSection> createState() => _HeroSectionState();
+}
+
+class _HeroSectionState extends State<HeroSection> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = VideoPlayerController.asset(Assets.videos.boostVideo)
+      ..setLooping(true)
+      ..setVolume(0)
+      ..initialize().then((_) {
+        _controller.play();
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isMobile = MediaQuery.of(context).size.width < 800;
+
+    return ClipRRect(
+      child: SizedBox(
+        height: isMobile ? 240 : 400,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            // 🖼️ FAST FALLBACK IMAGE (shows instantly)
+            Positioned.fill(
+              child: Image.asset(
+                Assets.images.mediaBoostChallenge.path,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            // 🎥 VIDEO (fades in when ready)
+            if (_controller.value.isInitialized)
+              Positioned.fill(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(0),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: SizedBox(
+                      width: _controller.value.size.width,
+                      height: _controller.value.size.height,
+                      child: VideoPlayer(_controller),
+                    ),
+                  ),
+                ),
+              ),
+
+            // 🔻 SUBTLE BOTTOM FADE ONLY (keep cinematic feel)
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 120,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.transparent, Color(0xFF020617)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // ✨ CONTENT (WITH LOCAL OVERLAY)
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 16 : 60,
+                vertical: isMobile ? 20 : 40,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  child: Stack(
+                    children: [
+                      // ✨ ACTUAL CONTENT
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // 🔴 Badge
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                "LIVE EVENT",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 14),
+
+                            // 🎬 Headline (with shadow instead of box)
+                            Text(
+                              "Rhapsody Media Boost Challenge",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: isMobile ? 26 : 44,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 20,
+                                    color: Colors.black.withOpacity(0.8),
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 14),
+
+                            // 📝 Description
+                            Text(
+                              "Stop scrolling. Start winning. Show your creativity and win big.",
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: isMobile ? 14 : 16,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.7),
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            // 🎯 Buttons
+                            Wrap(
+                              spacing: 12,
+                              runSpacing: 10,
+                              children: [
+                                WebButton(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  textColor: Colors.black,
+                                  bodytext: "Join the Challenge",
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LiveTVSection extends StatelessWidget {
+  const LiveTVSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _glassContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "LIVE TV",
+            style: TextStyle(color: Colors.white, fontSize: 22),
+          ),
+
+          const SizedBox(height: 20),
+
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Center(
+                child: Text(
+                  "Video Player",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 10),
+          Row(
+            children: const [
+              Icon(Icons.circle, color: Colors.red, size: 10),
+              SizedBox(width: 6),
+              Text("LIVE NOW", style: TextStyle(color: Colors.redAccent)),
             ],
           ),
         ],
@@ -185,413 +376,559 @@ class ExplorePage extends StatelessWidget {
   }
 }
 
-class TopNavBar extends StatelessWidget {
-  const TopNavBar();
+class FeaturedMediaSection extends StatelessWidget {
+  const FeaturedMediaSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bool isMobile = MediaQuery.of(context).size.width < 900;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-      decoration: const BoxDecoration(color: Color(0xFF020617)),
-      child: isMobile ? _mobileLayout(context) : _webLayout(context),
-    );
-  }
-
-  /// ================= MOBILE VIEW =================
-  Widget _mobileLayout(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// TOP BAR (LOGO + NAME + MENU ICON)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              "assets/images/rnm.png",
-              fit: BoxFit.scaleDown,
-              height: 40,
-              width: 40,
-            ),
-
-            ShaderMask(
-              shaderCallback: (bounds) => const LinearGradient(
-                colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
-              ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
-              child: Text(
-                "Rhapsody Media Network",
-                style: WebTextStyles.heading.copyWith(
-                  fontSize: 14,
-                  height: 1.1,
-                ),
-              ),
-            ),
-
-            /// MENU DROPDOWN
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.menu, color: Colors.white),
-              color: const Color(0xFF020617),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  onTap: () {
-                    context.pushNamedAndRemoveUntil(WebRoutes.home);
-                  },
-                  value: "Home",
-                  child: Text("Home", style: TextStyle(color: Colors.white)),
-                ),
-                PopupMenuItem(
-                  value: "Resources",
-                  child: Text(
-                    "Resources",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: "Creators",
-                  child: Text(
-                    "Creators",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: "Projects",
-                  child: Text(
-                    "Projects",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                PopupMenuItem(
-                  value: "Analytics",
-                  child: Text(
-                    "Analytics",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return _sectionWrapper(
+      title: "Featured",
+      child: SizedBox(
+        height: 220,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 10,
+          itemBuilder: (_, i) => _mediaCard(),
         ),
-      ],
-    );
-  }
-
-  /// ================= WEB / FOLD VIEW =================
-  Widget _webLayout(BuildContext context) {
-    return Row(
-      children: [
-        /// LOGO + NAME
-        Row(
-          children: [
-            Image.asset(
-              "assets/images/rnm.png",
-              fit: BoxFit.scaleDown,
-              height: 40,
-              width: 40,
-            ),
-            const SizedBox(width: 10),
-            ShaderMask(
-              shaderCallback: (bounds) => const LinearGradient(
-                colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
-              ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
-              child: Text(
-                "Rhapsody Media Network",
-                style: WebTextStyles.heading.copyWith(
-                  fontSize: 19,
-                  height: 1.1,
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        const Spacer(),
-
-        /// NAV ITEMS (WEB STYLE)
-        Row(
-          children: const [
-            NavItem("Home"),
-            NavItem("Resources"),
-            NavItem("Creators"),
-            NavItem("Projects"),
-            NavItem("Analytics"),
-            SizedBox(width: 20),
-            Icon(Icons.search, color: Colors.white70),
-            SizedBox(width: 20),
-            CircleAvatar(radius: 14),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class NavItem extends StatelessWidget {
-  final String title;
-  const NavItem(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Text(title, style: const TextStyle(color: Colors.white70)),
-    );
-  }
-}
-
-class HeroSection extends StatelessWidget {
-  const HeroSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isMobile = MediaQuery.of(context).size.width < 900;
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(36),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        color: const Color(0xFF020617),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
-      child: isMobile ? _mobileLayout(context) : _webLayout(context),
     );
   }
 
-  /// ================= MOBILE VIEW =================
-  Widget _mobileLayout(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// LIVE BADGE
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: const Color(0xFF2DD4BF).withValues(alpha: 0.4),
+  Widget _sectionWrapper({required String title, required Widget child}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          child: const Text(
-            "● Global Network Active",
-            style: TextStyle(
-              color: Color(0xFF2DD4BF),
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 51),
-
-        /// VISUAL CENTERED
-        Center(child: _heroVisual()),
-        const SizedBox(height: 36),
-
-        /// HEADLINE (smaller for mobile only)
-        const Text(
-          "A Global Media Network for Creators",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            height: 1.2,
-          ),
-        ),
-
-        const SizedBox(height: 12),
-
-        /// SUBTEXT
-        const Text(
-          "Connect, collaborate, and distribute creative content across a living ecosystem of media professionals, studios, and independent creators worldwide.",
-          style: TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
-        ),
-
-        const SizedBox(height: 28),
-
-        /// STATS (wrap for small screens)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            _HeroStat(title: "Creators", value: "100+"),
-            _HeroStat(title: "Assets", value: "300+"),
-            _HeroStat(title: "Countries", value: "124"),
-            _HeroStat(title: "Live Projects", value: "100+"),
-          ],
-        ),
-
-        const SizedBox(height: 30),
-      ],
+          const SizedBox(height: 20),
+          child,
+        ],
+      ),
     );
   }
 
-  /// ================= WEB / FOLD VIEW =================
-  Widget _webLayout(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: const Color(0xFF2DD4BF).withValues(alpha: 0.4),
-                  ),
-                ),
-                child: const Text(
-                  "● Global Network Active",
-                  style: TextStyle(
-                    color: Color(0xFF2DD4BF),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                "A Global Media Network for Creators",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 34,
-                  fontWeight: FontWeight.bold,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                "Connect, collaborate, and distribute creative content across a living ecosystem of media professionals, studios, and independent creators worldwide.",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  height: 1.5,
-                ),
-              ),
-              const SizedBox(height: 28),
-              Row(
-                children: const [
-                  _HeroStat(title: "Creators", value: "100+"),
-                  SizedBox(width: 24),
-                  _HeroStat(title: "Assets", value: "300+"),
-                  SizedBox(width: 24),
-                  _HeroStat(title: "Countries", value: "124"),
-                  SizedBox(width: 24),
-                  _HeroStat(title: "Live Projects", value: "100+"),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 40),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              width: 160,
-              height: 160,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFF6A5AE0).withValues(alpha: 0.15),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF6A5AE0).withValues(alpha: 0.25),
-                    blurRadius: 40,
-                    spreadRadius: 10,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFF2DD4BF).withValues(alpha: 0.10),
-              ),
-            ),
-            const Icon(
-              Icons.play_circle_fill,
-              size: 100,
-              color: Colors.white70,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  /// ================= SHARED VISUAL =================
-  Widget _heroVisual() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        /// 🔵 GLOW BACKDROP
-        Container(
-          width: 160,
-          height: 160,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFF6A5AE0).withValues(alpha: 0.15),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF6A5AE0).withValues(alpha: 0.25),
-                blurRadius: 40,
-                spreadRadius: 10,
-              ),
-            ],
-          ),
-        ),
-
-        /// 🟢 INNER LAYER
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFF2DD4BF).withValues(alpha: 0.10),
-          ),
-        ),
-
-        /// ▶️ ICON
-        const Icon(Icons.play_circle_fill, size: 100, color: Colors.white70),
-      ],
+  Widget _mediaCard() {
+    return Container(
+      width: 300,
+      margin: const EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.grey[900],
+      ),
     );
   }
 }
 
-class _HeroStat extends StatelessWidget {
-  final String title;
-  final String value;
-
-  const _HeroStat({required this.title, required this.value});
+class TrendingSection extends StatelessWidget {
+  const TrendingSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return _sectionWrapper(
+      title: "Trending",
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 8,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 16 / 9,
+        ),
+        itemBuilder: (_, i) => Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GlobalImpactSection extends StatelessWidget {
+  const GlobalImpactSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _glassContainer(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: const [
+          _counter("150+", "Countries"),
+          _counter("2M+", "Viewers"),
+          _counter("24/7", "Broadcast"),
+        ],
+      ),
+    );
+  }
+}
+
+class _counter extends StatelessWidget {
+  final String value;
+  final String label;
+
+  const _counter(this.value, this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           value,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: isMobile ? 18 : 32,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 4),
+        Text(label, style: TextStyle(color: Colors.black.withOpacity(0.6))),
+      ],
+    );
+  }
+}
+
+class MinistriesSection extends StatelessWidget {
+  const MinistriesSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _sectionWrapper(
+      title: "Ministries",
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 6,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          childAspectRatio: 1.4,
+        ),
+        itemBuilder: (_, index) {
+          return Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              color: Colors.white.withOpacity(0.05),
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.public, color: Colors.white, size: 30),
+                const SizedBox(height: 20),
+                const Text(
+                  "Global Outreach",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "Reaching nations with the gospel through media.",
+                  style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                ),
+                const Spacer(),
+                const Text(
+                  "Learn More →",
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class NewsSection extends StatelessWidget {
+  const NewsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    final crossAxisCount = width > 1000
+        ? 3
+        : width > 600
+        ? 2
+        : 1;
+
+    return _sectionWrapper(
+      title: "News & Updates",
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('news').snapshots(),
+        builder: (context, snapshot) {
+          // 🔄 Loading
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // ❌ Error
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                "Failed to load news",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+
+          final docs = snapshot.data?.docs ?? [];
+
+          // 📭 Empty
+          if (docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "No news available",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+
+          return GridView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+       
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              childAspectRatio: 0.8, // 👈 gives more vertical room
+            ),
+            itemCount: docs.length,
+            itemBuilder: (_, index) {
+              final data = docs[index].data() as Map<String, dynamic>;
+
+              final title = data['title'] ?? '';
+              final imageUrl = data['url'] ?? '';
+
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  color: Colors.white.withOpacity(0.05),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 🖼 IMAGE (FULLY VISIBLE)
+                      imageUrl.isNotEmpty
+                          ? Image.network(
+                              imageUrl,
+                              fit: BoxFit.contain, // 🔥 key
+                              width: double.infinity,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return const Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  Assets.images.mediaBoostChallenge.path,
+                                  fit: BoxFit.contain,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              Assets.images.mediaBoostChallenge.path,
+                              fit: BoxFit.contain,
+                            ),
+
+                      // 📝 TITLE
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class FooterSection extends StatelessWidget {
+  const FooterSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    final isMobile = width < 600;
+    final isTablet = width >= 600 && width < 1024;
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 60, vertical: 40),
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isMobile) _brand() else if (isTablet) _brand(),
+          const SizedBox(height: 16),
+
+          // 🔻 MAIN CONTENT
+          if (isMobile)
+            _mobileGridLayout()
+          else if (isTablet)
+            _tabletLayout()
+          else
+            _desktopLayout(),
+
+          const SizedBox(height: 30),
+
+          Center(
+            child: const Text(
+              "© 2026 Rhapsody TV. All rights reserved.",
+              style: TextStyle(color: Colors.black54),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= DESKTOP =================
+  Widget _desktopLayout() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _brand(),
+        _footerColumn("Explore", ["Home", "Live TV", "Programs", "News"]),
+        _footerColumn("Ministries", [
+          "Outreach",
+          "Global Missions",
+          "Partners",
+        ]),
+        _footerColumn("Connect", ["Contact", "Support", "Privacy Policy"]),
+      ],
+    );
+  }
+
+  // ================= TABLET =================
+  Widget _tabletLayout() {
+    return Wrap(
+      spacing: 130,
+      runSpacing: 30,
+      alignment: WrapAlignment.spaceBetween,
+      children: [
+        _footerColumn("Explore", ["Home", "Live TV", "Programs", "News"]),
+        _footerColumn("Ministries", [
+          "Outreach",
+          "Global Missions",
+          "Partners",
+        ]),
+        _footerColumn("Connect", ["Contact", "Support", "Privacy Policy"]),
+      ],
+    );
+  }
+
+  // ================= MOBILE (GRID FIX) =================
+  Widget _mobileGridLayout() {
+    final items = [
+      _footerColumn("Explore", ["Home", "Live TV", "Programs", "News"]),
+      _footerColumn("Ministries", ["Outreach", "Global Missions", "Partners"]),
+      _footerColumn("Connect", ["Contact", "Support", "Privacy Policy"]),
+    ];
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // 🔥 KEY FIX
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        childAspectRatio: 1.2,
+      ),
+      itemBuilder: (_, index) {
+        return items[index];
+      },
+    );
+  }
+
+  // ================= BRAND =================
+  Widget _brand() {
+    return ShaderMask(
+      shaderCallback: (bounds) => const LinearGradient(
+        colors: [Colors.deepPurpleAccent, Colors.cyanAccent],
+      ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+      child: Text(
+        "Rhapsody Media Network",
+        style: WebTextStyles.heading.copyWith(fontSize: 18),
+      ),
+    );
+  }
+
+  // ================= COLUMN =================
+  Widget _footerColumn(String title, List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Text(
           title,
-          style: const TextStyle(color: Colors.white60, fontSize: 12),
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        ...items.map(
+          (e) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(e, style: const TextStyle(color: Colors.black87)),
+          ),
         ),
       ],
+    );
+  }
+}
+
+class CTASection extends StatefulWidget {
+  const CTASection({super.key});
+
+  @override
+  State<CTASection> createState() => _CTASectionState();
+}
+
+class _CTASectionState extends State<CTASection> {
+  final TextEditingController stayconnectedcontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    stayconnectedcontroller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
+    return Container(
+      margin: const EdgeInsets.all(40),
+      padding: const EdgeInsets.all(40),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Stay Connected",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          // 📱 RESPONSIVE LAYOUT
+          isMobile
+              ? Column(
+                  children: [
+                    _buildTextField(stayconnectedcontroller, "Enter Email"),
+                    const SizedBox(height: 20),
+                    WebButton(
+                      decoration: boxDecoration,
+                      textColor: Colors.white,
+                      bodytext: "Subscribe",
+                    ),
+                  ],
+                )
+              : ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildTextField(
+                          stayconnectedcontroller,
+                          "Enter Email",
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      WebButton(
+                        decoration: boxDecoration,
+                        textColor: Colors.white,
+                        bodytext: "Subscribe",
+                      ),
+                    ],
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label, {
+    String? Function(String?)? validator,
+    List<TextInputFormatter>? inputFormatters,
+  }) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(color: Colors.black),
+      validator: validator,
+      inputFormatters: inputFormatters,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.deepPurple),
+
+        filled: true,
+        fillColor: Colors.deepPurple.withOpacity(0.05),
+
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.black12),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Colors.deepPurpleAccent,
+            width: 1.5,
+          ),
+        ),
+      ),
     );
   }
 }

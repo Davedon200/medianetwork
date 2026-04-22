@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/admin/admin_dashboard.dart';
-import 'package:media_network/routes.dart';
-import 'package:media_network/widgets/constant.dart';
-import 'package:media_network/widgets/extension.dart';
-import 'package:media_network/widgets/textstyles.dart';
-import 'package:media_network/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:rhapsody_media_network/routes.dart';
+import 'package:rhapsody_media_network/widgets/constant.dart';
+import 'package:rhapsody_media_network/widgets/extension.dart';
+import 'package:rhapsody_media_network/widgets/textstyles.dart';
+import 'package:rhapsody_media_network/widgets/widget.dart';
 
 class RhapsodyLandingPage extends StatefulWidget {
   const RhapsodyLandingPage({super.key});
@@ -59,9 +58,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
     }
     if (path == '/admin') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          AdminDashboard();
-        });
+        context.pushNamed(WebRoutes.admin);
       });
     }
 
@@ -157,7 +154,6 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
     void Function(String email)? onEmailCaptured,
   ) async {
     final TextEditingController emailController = TextEditingController();
-    final bool isMobile = MediaQuery.of(context).size.width < 900;
     final formKey = GlobalKey<FormState>();
 
     bool isChecking = false;
@@ -1018,7 +1014,7 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                           SizedBox(
                             width: 140,
                             child: DropdownButtonFormField<String>(
-                              value: selectedCountryCode,
+                              initialValue: selectedCountryCode,
                               isExpanded: true, // 🔥 IMPORTANT FIX
 
                               style: const TextStyle(color: Colors.black),

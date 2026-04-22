@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
-import 'package:media_network/model/web_models.dart';
-import 'package:media_network/services/dio_service.dart';
+import 'package:rhapsody_media_network/model/web_models.dart';
+import 'package:rhapsody_media_network/services/dio_service.dart';
 import 'package:video_player/video_player.dart';
 
 class MediaCard extends StatelessWidget {

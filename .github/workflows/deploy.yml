@@ -3,7 +3,7 @@ name: Build & Deploy Rhapsody Media Web
 on:
   push:
     branches:
-      - dave-dev
+      - main
 
 jobs:
   build-deploy:
