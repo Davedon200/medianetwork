@@ -599,78 +599,79 @@ class NewsSection extends StatelessWidget {
               ),
             );
           }
+          return SizedBox();
 
-          return GridView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-       
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-              childAspectRatio: 0.8, // 👈 gives more vertical room
-            ),
-            itemCount: docs.length,
-            itemBuilder: (_, index) {
-              final data = docs[index].data() as Map<String, dynamic>;
+          // return GridView(
+          //   shrinkWrap: true,
+          //   physics: const NeverScrollableScrollPhysics(),
 
-              final title = data['title'] ?? '';
-              final imageUrl = data['url'] ?? '';
+          //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //     crossAxisCount: crossAxisCount,
+          //     crossAxisSpacing: 20,
+          //     mainAxisSpacing: 20,
+          //     childAspectRatio: 0.8, // 👈 gives more vertical room
+          //   ),
+          //   itemCount: docs.length,
+          //   itemBuilder: (_, index) {
+          //     final data = docs[index].data() as Map<String, dynamic>;
 
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  color: Colors.white.withOpacity(0.05),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 🖼 IMAGE (FULLY VISIBLE)
-                      imageUrl.isNotEmpty
-                          ? Image.network(
-                              imageUrl,
-                              fit: BoxFit.contain, // 🔥 key
-                              width: double.infinity,
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return const Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  Assets.images.mediaBoostChallenge.path,
-                                  fit: BoxFit.contain,
-                                );
-                              },
-                            )
-                          : Image.asset(
-                              Assets.images.mediaBoostChallenge.path,
-                              fit: BoxFit.contain,
-                            ),
+          //     final title = data['title'] ?? '';
+          //     final imageUrl = data['url'] ?? '';
 
-                      // 📝 TITLE
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          //     return Container(
+          //       decoration: BoxDecoration(
+          //         borderRadius: BorderRadius.circular(18),
+          //         color: Colors.white.withOpacity(0.05),
+          //       ),
+          //       child: ClipRRect(
+          //         borderRadius: BorderRadius.circular(18),
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             // 🖼 IMAGE (FULLY VISIBLE)
+          //             imageUrl.isNotEmpty
+          //                 ? Image.network(
+          //                     imageUrl,
+          //                     fit: BoxFit.contain, // 🔥 key
+          //                     width: double.infinity,
+          //                     loadingBuilder: (context, child, progress) {
+          //                       if (progress == null) return child;
+          //                       return const Padding(
+          //                         padding: EdgeInsets.all(20),
+          //                         child: Center(
+          //                           child: CircularProgressIndicator(),
+          //                         ),
+          //                       );
+          //                     },
+          //                     errorBuilder: (context, error, stackTrace) {
+          //                       return Image.asset(
+          //                         Assets.images.mediaBoostChallenge.path,
+          //                         fit: BoxFit.contain,
+          //                       );
+          //                     },
+          //                   )
+          //                 : Image.asset(
+          //                     Assets.images.mediaBoostChallenge.path,
+          //                     fit: BoxFit.contain,
+          //                   ),
+
+          //             // 📝 TITLE
+          //             Padding(
+          //               padding: const EdgeInsets.all(16),
+          //               child: Text(
+          //                 title,
+          //                 style: const TextStyle(
+          //                   color: Colors.white,
+          //                   fontWeight: FontWeight.bold,
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // );
         },
       ),
     );
