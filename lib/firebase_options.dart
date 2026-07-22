@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'media-network-9315c.firebasestorage.app',
     measurementId: 'G-WXFGNLM9EY',
   );
+
 }
