@@ -1,10 +1,9 @@
 name: rhapsody_media_network
 description: "A global network of creative professionals and media innovators"
 
-publish_to: 'none' 
+publish_to: "none"
 
-
-version: 0.1.10+1
+version: 0.1.10+3
 
 environment:
   sdk: ^3.9.2
@@ -33,7 +32,7 @@ dependencies:
   file_saver: ^0.2.14
   web: ^1.1.1
   build_runner: ^2.13.1
-  
+  flutter_svg: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -41,11 +40,8 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_gen_runner: ^5.14.0
 
-
-
 # The following section is specific to Flutter packages.
 flutter:
-
   generate: true
   uses-material-design: true
 
@@ -53,7 +49,6 @@ flutter:
   assets:
     - assets/images/
     - assets/videos/
-
 
 flutter_gen:
   output: lib/gen/

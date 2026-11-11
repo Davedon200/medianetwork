@@ -61,6 +61,11 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
         context.pushNamed(WebRoutes.admin);
       });
     }
+    if (path == '/survey') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.pushNamed(WebRoutes.survey);
+      });
+    }
 
     _trackVisit();
   }
@@ -515,6 +520,15 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
                       textColor: Colors.black,
                       onPressed: () => exploreDialog(),
                       bodytext: "Explore Network",
+                    ),
+                    WebButton(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE0A325),
+                        borderRadius: BorderRadius.circular(32),
+                      ),
+                      textColor: const Color(0xFF3B2A06),
+                      onPressed: () => context.pushNamed(WebRoutes.survey),
+                      bodytext: "Partner Survey",
                     ),
                   ],
                 ),

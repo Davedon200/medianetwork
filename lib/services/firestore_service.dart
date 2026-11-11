@@ -23,4 +23,42 @@ class RegistrationService {
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
+
+  /// Returns null when saved, or a short error the page can show.
+  static Future<String?> submitSurvey({
+    required String title,
+    required String name,
+    required String email,
+    required String phone,
+    required String kc,
+    required List<String> platforms,
+    required List<String> programs,
+    required String satisfaction,
+    required String newFeature,
+    required String suggestions,
+    required String discovery,
+  }) async {
+    final normalized = email.trim().toLowerCase();
+    final ref = _db.collection('surveys').doc(normalized);
+    final existing = await ref.get();
+    if (existing.exists) {
+      return 'You have already submitted this survey.';
+    }
+
+    await ref.set({
+      'title': title,
+      'name': name,
+      'email': normalized,
+      'phone': phone,
+      'kc': kc,
+      'platforms': platforms,
+      'programs': programs,
+      'satisfaction': satisfaction,
+      'newFeature': newFeature,
+      'suggestions': suggestions,
+      'discovery': discovery,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+    return null;
+  }
 }

@@ -5,6 +5,7 @@ import 'package:rhapsody_media_network/features/home_page.dart';
 import 'package:rhapsody_media_network/features/landing_page.dart';
 import 'package:rhapsody_media_network/features/media_boost_page.dart';
 import 'package:rhapsody_media_network/features/resource_page.dart';
+import 'package:rhapsody_media_network/features/survey_page.dart';
 import 'package:rhapsody_media_network/widgets/widget.dart';
 
 class WebRoutes {
@@ -19,6 +20,7 @@ class WebRoutes {
   static const String mediaboostpage = "/mediaboostpage";
   static const String getstartedpage = "/getstartedpage";
   static const String resource = "/resource";
+  static const String survey = "/survey";
 
   Route<dynamic>? generateRoute(RouteSettings routeSettings) {
     final routeName = routeSettings.name;
@@ -39,6 +41,8 @@ class WebRoutes {
         return MaterialPageRoute(builder: (context) => const MediaBoost());
       case WebRoutes.resource:
         return MaterialPageRoute(builder: (context) => const ResourcePage());
+      case WebRoutes.survey:
+        return MaterialPageRoute(builder: (context) => const SurveyPage());
     }
     return null;
   }
