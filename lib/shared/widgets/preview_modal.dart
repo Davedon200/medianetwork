@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/app_motion.dart';
-import 'package:media_network/data/models/media_item.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/app_motion.dart';
+import 'package:rhapsody_media_network/data/models/media_item.dart';
 import 'package:video_player/video_player.dart';
 
 class PreviewModal extends StatefulWidget {

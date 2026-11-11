@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/data/models/home_snapshot.dart';
-import 'package:media_network/shared/widgets/web_button.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/data/models/home_snapshot.dart';
+import 'package:rhapsody_media_network/shared/widgets/web_button.dart';
 
 class NetworkNewsInfoCard extends StatelessWidget {
   const NetworkNewsInfoCard({super.key, required this.items});

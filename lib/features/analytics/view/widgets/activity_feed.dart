@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/data/models/analytics_snapshot.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/data/models/analytics_snapshot.dart';
 
 class ActivityFeed extends StatelessWidget {
   const ActivityFeed({super.key, required this.items});

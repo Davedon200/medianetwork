@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/constants/form_options.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/theme/app_palette.dart';
-import 'package:media_network/features/landing/viewmodel/landing_view_model.dart';
-import 'package:media_network/shared/widgets/web_button.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/constants/form_options.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/features/landing/viewmodel/landing_view_model.dart';
+import 'package:rhapsody_media_network/shared/widgets/web_button.dart';
 
 class RegistrationFormOverlay extends StatelessWidget {
   const RegistrationFormOverlay({

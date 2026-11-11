@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/responsive/responsive.dart';
-import 'package:media_network/core/theme/text_styles.dart';
-import 'package:media_network/core/theme/theme_view_model.dart';
-import 'package:media_network/data/models/user_profile.dart';
-import 'package:media_network/data/repositories/profile_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/chat/services/chat_notification_service.dart';
-import 'package:media_network/features/profile/view/widgets/profile_avatar.dart';
-import 'package:media_network/shared/widgets/theme_toggle_button.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/responsive/responsive.dart';
+import 'package:rhapsody_media_network/core/theme/text_styles.dart';
+import 'package:rhapsody_media_network/core/theme/theme_view_model.dart';
+import 'package:rhapsody_media_network/data/models/user_profile.dart';
+import 'package:rhapsody_media_network/data/repositories/profile_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/chat/services/chat_notification_service.dart';
+import 'package:rhapsody_media_network/features/profile/view/widgets/profile_avatar.dart';
+import 'package:rhapsody_media_network/shared/widgets/theme_toggle_button.dart';
 import 'package:provider/provider.dart';
 
 class AppNavBar extends StatefulWidget {

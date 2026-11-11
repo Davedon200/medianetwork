@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/data/mock/projects_mock_data.dart';
-import 'package:media_network/data/models/project.dart';
+import 'package:rhapsody_media_network/data/mock/projects_mock_data.dart';
+import 'package:rhapsody_media_network/data/models/project.dart';
 
 class ProjectsViewModel extends ChangeNotifier {
   static const filters = ['All', 'Live', 'In Progress', 'Completed'];

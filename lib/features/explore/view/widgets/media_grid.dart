@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/data/models/media_item.dart';
-import 'package:media_network/shared/widgets/media_card.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/data/models/media_item.dart';
+import 'package:rhapsody_media_network/shared/widgets/media_card.dart';
 
 class MediaGrid extends StatelessWidget {
   const MediaGrid({

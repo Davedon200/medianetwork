@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
 
 abstract class RegistrationRepository {
   Future<bool> existsByEmail(String email);

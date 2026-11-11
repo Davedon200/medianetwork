@@ -1,4 +1,4 @@
-import 'package:media_network/data/models/creator_profile.dart';
+import 'package:rhapsody_media_network/data/models/creator_profile.dart';
 
 class CreatorsMockData {
   CreatorsMockData._();

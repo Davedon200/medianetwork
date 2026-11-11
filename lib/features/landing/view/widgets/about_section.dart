@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/responsive/responsive.dart';
-import 'package:media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/responsive/responsive.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
 
 class LandingAboutSection extends StatelessWidget {
   const LandingAboutSection({super.key, required this.isMobile});

@@ -85,7 +85,6 @@ class SurveyPage extends StatefulWidget {
 class _SurveyPageState extends State<SurveyPage> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
-  final _email = TextEditingController();
   final _phone = TextEditingController();
   final _kc = TextEditingController();
   final _feature = TextEditingController();
@@ -106,7 +105,6 @@ class _SurveyPageState extends State<SurveyPage> {
   @override
   void dispose() {
     _name.dispose();
-    _email.dispose();
     _phone.dispose();
     _kc.dispose();
     _feature.dispose();
@@ -263,7 +261,6 @@ class _SurveyPageState extends State<SurveyPage> {
       final error = await RegistrationService.submitSurvey(
         title: _title!,
         name: _name.text.trim(),
-        email: _email.text.trim(),
         phone: '$_countryCode${_phone.text.trim()}',
         kc: _kc.text.trim(),
         platforms: [
@@ -408,30 +405,12 @@ class _SurveyPageState extends State<SurveyPage> {
               ),
             ),
           ),
-          _pair(
-            wide,
-            _labeled(
-              '3. Email Address *',
-              TextFormField(
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: Color(0xFF111827)),
-                decoration: _field('Enter your email address', prefix: const Icon(Icons.mail_outline, color: Color(0xFF64748B))),
-                validator: (value) {
-                  final email = value?.trim() ?? '';
-                  if (!email.contains('@') || !email.contains('.')) {
-                    return 'Enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            _labeled(
-              '4. Phone Number *',
+          _labeled(
+            '3. Phone Number *',
               Row(
                 children: [
-                  Flexible(
-                    flex: 5,
+                  SizedBox(
+                    width: 128,
                     child: DropdownButtonFormField<String>(
                       initialValue: _countryCode,
                       isExpanded: true,
@@ -480,9 +459,8 @@ class _SurveyPageState extends State<SurveyPage> {
                 ],
               ),
             ),
-          ),
           _labeled(
-            '5. KingsChat (KC) Handle *',
+            '4. KingsChat (KC) Handle *',
             TextFormField(
               controller: _kc,
               style: const TextStyle(color: Color(0xFF111827)),
@@ -505,7 +483,7 @@ class _SurveyPageState extends State<SurveyPage> {
             TextSpan(
               style: TextStyle(color: Color(0xFF111827), fontWeight: FontWeight.w700),
               children: [
-                TextSpan(text: '6. Platform(s) used to watch *  '),
+                TextSpan(text: '5. Platform(s) used to watch *  '),
                 TextSpan(
                   text: '(Select all that apply)',
                   style: TextStyle(color: Color(0xFF64748B), fontWeight: FontWeight.w500),
@@ -534,8 +512,8 @@ class _SurveyPageState extends State<SurveyPage> {
                                 final index = row * columns + column;
                                 if (index >= _platforms.length) {
                                   return mobile
-                                      ? const AspectRatio(aspectRatio: 1, child: SizedBox.shrink())
-                                      : const SizedBox(height: 92);
+                                      ? const AspectRatio(aspectRatio: 1.45, child: SizedBox.shrink())
+                                      : const SizedBox(height: 72);
                                 }
                                 final platform = _platforms[index];
                                 final tile = _PlatformTile(
@@ -550,7 +528,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                     });
                                   },
                                 );
-                                return mobile ? AspectRatio(aspectRatio: 1, child: tile) : tile;
+                                return mobile ? AspectRatio(aspectRatio: 1.45, child: tile) : tile;
                               }(),
                             ),
                           ],
@@ -580,7 +558,7 @@ class _SurveyPageState extends State<SurveyPage> {
           ],
           const SizedBox(height: 16),
           _pickerField(
-            '7. Your Favorite Rhapsody TV Program(s) *',
+            '6. Your Favorite Rhapsody TV Program(s) *',
             _programsSelected,
             'Select program(s)',
             Icons.live_tv_outlined,
@@ -598,7 +576,7 @@ class _SurveyPageState extends State<SurveyPage> {
           ),
           const SizedBox(height: 16),
           const Text(
-            '8. Overall satisfaction rating *',
+            '7. Overall satisfaction rating *',
             style: TextStyle(color: Color(0xFF111827), fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 8),
@@ -613,7 +591,7 @@ class _SurveyPageState extends State<SurveyPage> {
                         Icon(
                           Icons.star_rounded,
                           size: 34,
-                          color: _satisfaction == _ratings[index]
+                          color: _satisfaction != null && index <= _ratings.indexOf(_satisfaction!)
                               ? const Color(0xFFE0A325)
                               : const Color(0xFFB0B6C0),
                         ),
@@ -637,7 +615,7 @@ class _SurveyPageState extends State<SurveyPage> {
           ),
           const SizedBox(height: 16),
           _labeled(
-            '9. What new feature will you like to see on Rhapsody TV? *',
+            '8. What new feature will you like to see on Rhapsody TV? *',
             TextFormField(
               controller: _feature,
               maxLines: 3,
@@ -648,7 +626,7 @@ class _SurveyPageState extends State<SurveyPage> {
             ),
           ),
           _labeled(
-            '10. Suggestions to improve the viewing experience *',
+            '9. Suggestions to improve the viewing experience *',
             TextFormField(
               controller: _suggestions,
               maxLines: 3,
@@ -659,7 +637,7 @@ class _SurveyPageState extends State<SurveyPage> {
             ),
           ),
           _labeled(
-            '11. How did you discover Rhapsody TV? *',
+            '10. How did you discover Rhapsody TV? *',
             DropdownButtonFormField<String>(
               initialValue: _discoveryChoice,
               isExpanded: true,
@@ -1026,7 +1004,7 @@ class _PlatformTile extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: SizedBox(
-          height: 92,
+          height: 72,
           child: Stack(
             children: [
               Center(

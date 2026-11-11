@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/motion/app_motion.dart';
+import 'package:rhapsody_media_network/core/motion/app_motion.dart';
 
 CustomTransitionPage<T> animatedPage<T>({
   required LocalKey key,

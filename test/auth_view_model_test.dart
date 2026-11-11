@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_network/data/models/user_profile.dart';
-import 'package:media_network/data/repositories/profile_repository.dart';
-import 'package:media_network/features/auth/data/auth_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/data/models/user_profile.dart';
+import 'package:rhapsody_media_network/data/repositories/profile_repository.dart';
+import 'package:rhapsody_media_network/features/auth/data/auth_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FakeAuthRepository implements AuthRepository {

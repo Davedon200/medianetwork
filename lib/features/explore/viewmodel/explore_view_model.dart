@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/data/models/media_item.dart';
-import 'package:media_network/data/repositories/media_repository.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/data/models/media_item.dart';
+import 'package:rhapsody_media_network/data/repositories/media_repository.dart';
 
 enum ExploreLoadState { loading, loaded, error }
 

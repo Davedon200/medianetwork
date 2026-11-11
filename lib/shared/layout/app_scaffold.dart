@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/responsive/responsive.dart';
-import 'package:media_network/shared/widgets/app_nav_bar.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/responsive/responsive.dart';
+import 'package:rhapsody_media_network/shared/widgets/app_nav_bar.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({

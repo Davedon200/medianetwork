@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/chat/viewmodel/conversations_list_view_model.dart';
-import 'package:media_network/shared/layout/app_page_shell.dart';
-import 'package:media_network/shared/widgets/section_header.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/chat/viewmodel/conversations_list_view_model.dart';
+import 'package:rhapsody_media_network/shared/layout/app_page_shell.dart';
+import 'package:rhapsody_media_network/shared/widgets/section_header.dart';
 import 'package:provider/provider.dart';
 
 class ConversationsPage extends StatelessWidget {

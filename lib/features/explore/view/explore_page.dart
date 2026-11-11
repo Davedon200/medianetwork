@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/data/repositories/media_repository.dart';
-import 'package:media_network/features/explore/view/widgets/media_grid.dart';
-import 'package:media_network/features/explore/viewmodel/explore_view_model.dart';
-import 'package:media_network/shared/layout/app_page_shell.dart';
-import 'package:media_network/shared/widgets/section_header.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/data/repositories/media_repository.dart';
+import 'package:rhapsody_media_network/features/explore/view/widgets/media_grid.dart';
+import 'package:rhapsody_media_network/features/explore/viewmodel/explore_view_model.dart';
+import 'package:rhapsody_media_network/shared/layout/app_page_shell.dart';
+import 'package:rhapsody_media_network/shared/widgets/section_header.dart';
 import 'package:provider/provider.dart';
 
 class ExplorePage extends StatelessWidget {

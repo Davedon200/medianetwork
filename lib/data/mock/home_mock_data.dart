@@ -1,4 +1,4 @@
-import 'package:media_network/data/models/home_snapshot.dart';
+import 'package:rhapsody_media_network/data/models/home_snapshot.dart';
 
 class HomeMockData {
   HomeMockData._();

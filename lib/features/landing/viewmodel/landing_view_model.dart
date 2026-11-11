@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/data/models/registration.dart';
-import 'package:media_network/data/repositories/analytics_repository.dart';
-import 'package:media_network/data/repositories/registration_repository.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/data/repositories/analytics_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/registration_repository.dart';
 
 enum LandingEvent {
   navigateToExplore,

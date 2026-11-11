@@ -1,4 +1,4 @@
-import 'package:media_network/data/models/project.dart';
+import 'package:rhapsody_media_network/data/models/project.dart';
 
 class ProjectsMockData {
   ProjectsMockData._();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/features/home/view/widgets/welcome_hero_video_background.dart';
-import 'package:media_network/shared/widgets/web_button.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/features/home/view/widgets/welcome_hero_video_background.dart';
+import 'package:rhapsody_media_network/shared/widgets/web_button.dart';
 
 class HomeWelcomeHero extends StatelessWidget {
   const HomeWelcomeHero({

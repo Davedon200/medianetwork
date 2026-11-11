@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/shared/widgets/theme_toggle_button.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/shared/widgets/theme_toggle_button.dart';
 
 class LandingFooter extends StatelessWidget {
   const LandingFooter({super.key});

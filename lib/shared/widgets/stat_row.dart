@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/shared/widgets/hero_stat.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/shared/widgets/hero_stat.dart';
 
 class StatRow extends StatelessWidget {
   const StatRow({super.key, required this.stats});

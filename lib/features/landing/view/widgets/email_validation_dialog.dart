@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/animated_dialog.dart';
-import 'package:media_network/core/theme/text_styles.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/features/landing/viewmodel/landing_view_model.dart';
-import 'package:media_network/shared/widgets/web_button.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/animated_dialog.dart';
+import 'package:rhapsody_media_network/core/theme/text_styles.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/features/landing/viewmodel/landing_view_model.dart';
+import 'package:rhapsody_media_network/shared/widgets/web_button.dart';
 
 Future<EmailCheckResult?> showEmailValidationDialog(
   BuildContext context,

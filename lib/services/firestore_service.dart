@@ -28,7 +28,6 @@ class RegistrationService {
   static Future<String?> submitSurvey({
     required String title,
     required String name,
-    required String email,
     required String phone,
     required String kc,
     required List<String> platforms,
@@ -38,17 +37,9 @@ class RegistrationService {
     required String suggestions,
     required String discovery,
   }) async {
-    final normalized = email.trim().toLowerCase();
-    final ref = _db.collection('surveys').doc(normalized);
-    final existing = await ref.get();
-    if (existing.exists) {
-      return 'You have already submitted this survey.';
-    }
-
-    await ref.set({
+    await _db.collection('surveys').add({
       'title': title,
       'name': name,
-      'email': normalized,
       'phone': phone,
       'kc': kc,
       'platforms': platforms,

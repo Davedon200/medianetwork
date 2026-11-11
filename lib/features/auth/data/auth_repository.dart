@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:media_network/core/constants/auth_constants.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/core/constants/auth_constants.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthRepository {

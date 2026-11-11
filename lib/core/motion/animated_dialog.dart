@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/motion/app_motion.dart';
+import 'package:rhapsody_media_network/core/motion/app_motion.dart';
 
 Future<T?> showAnimatedDialog<T>({
   required BuildContext context,

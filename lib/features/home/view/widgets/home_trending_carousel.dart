@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/core/responsive/responsive.dart';
-import 'package:media_network/data/models/home_snapshot.dart';
-import 'package:media_network/shared/widgets/hero_chip.dart';
-import 'package:media_network/shared/widgets/hover_widgets.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/core/responsive/responsive.dart';
+import 'package:rhapsody_media_network/data/models/home_snapshot.dart';
+import 'package:rhapsody_media_network/shared/widgets/hero_chip.dart';
+import 'package:rhapsody_media_network/shared/widgets/hover_widgets.dart';
 
 class HomeTrendingCarousel extends StatelessWidget {
   const HomeTrendingCarousel({super.key, required this.items});

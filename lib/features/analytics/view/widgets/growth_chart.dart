@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/theme/app_palette.dart';
-import 'package:media_network/shared/widgets/glass_card.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/shared/widgets/glass_card.dart';
 
 class GrowthChart extends StatelessWidget {
   const GrowthChart({super.key, required this.data});

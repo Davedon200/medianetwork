@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/data/models/chat_message.dart';
-import 'package:media_network/data/repositories/chat_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/chat/services/chat_notification_service.dart';
+import 'package:rhapsody_media_network/data/models/chat_message.dart';
+import 'package:rhapsody_media_network/data/repositories/chat_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/chat/services/chat_notification_service.dart';
 
 class ChatViewModel extends ChangeNotifier {
   ChatViewModel({

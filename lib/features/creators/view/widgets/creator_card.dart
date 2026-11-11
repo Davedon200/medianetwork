@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/theme/app_palette.dart';
-import 'package:media_network/data/models/creator_profile.dart';
-import 'package:media_network/data/repositories/chat_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/shared/widgets/hero_chip.dart';
-import 'package:media_network/shared/widgets/hover_widgets.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/data/models/creator_profile.dart';
+import 'package:rhapsody_media_network/data/repositories/chat_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/shared/widgets/hero_chip.dart';
+import 'package:rhapsody_media_network/shared/widgets/hover_widgets.dart';
 import 'package:provider/provider.dart';
 
 class CreatorCard extends StatelessWidget {

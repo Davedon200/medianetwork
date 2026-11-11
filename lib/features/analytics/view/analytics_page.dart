@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/features/analytics/viewmodel/analytics_view_model.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/features/analytics/view/widgets/activity_feed.dart';
-import 'package:media_network/features/analytics/view/widgets/category_bars.dart';
-import 'package:media_network/features/analytics/view/widgets/country_bars.dart';
-import 'package:media_network/features/analytics/view/widgets/growth_chart.dart';
-import 'package:media_network/shared/layout/app_page_shell.dart';
-import 'package:media_network/shared/widgets/section_header.dart';
-import 'package:media_network/shared/widgets/stat_row.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/features/analytics/viewmodel/analytics_view_model.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/features/analytics/view/widgets/activity_feed.dart';
+import 'package:rhapsody_media_network/features/analytics/view/widgets/category_bars.dart';
+import 'package:rhapsody_media_network/features/analytics/view/widgets/country_bars.dart';
+import 'package:rhapsody_media_network/features/analytics/view/widgets/growth_chart.dart';
+import 'package:rhapsody_media_network/shared/layout/app_page_shell.dart';
+import 'package:rhapsody_media_network/shared/widgets/section_header.dart';
+import 'package:rhapsody_media_network/shared/widgets/stat_row.dart';
 import 'package:provider/provider.dart';
 
 class AnalyticsPage extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/animated_dialog.dart';
-import 'package:media_network/core/theme/text_styles.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/animated_dialog.dart';
+import 'package:rhapsody_media_network/core/theme/text_styles.dart';
 
 const _loginErrorMessage = 'Error logging in. Try again.';
 

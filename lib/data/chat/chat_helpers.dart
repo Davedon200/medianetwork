@@ -1,5 +1,5 @@
-import 'package:media_network/data/models/chat_message.dart';
-import 'package:media_network/data/models/conversation.dart';
+import 'package:rhapsody_media_network/data/models/chat_message.dart';
+import 'package:rhapsody_media_network/data/models/conversation.dart';
 
 /// Builds a stable conversation id from two participant emails.
 String buildConversationId(String emailA, String emailB) {

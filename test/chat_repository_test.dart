@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_network/data/chat/chat_helpers.dart';
+import 'package:rhapsody_media_network/data/chat/chat_helpers.dart';
 
 void main() {
   group('buildConversationId', () {

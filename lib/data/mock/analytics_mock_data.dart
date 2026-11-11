@@ -1,4 +1,4 @@
-import 'package:media_network/data/models/analytics_snapshot.dart';
+import 'package:rhapsody_media_network/data/models/analytics_snapshot.dart';
 
 class AnalyticsMockData {
   AnalyticsMockData._();

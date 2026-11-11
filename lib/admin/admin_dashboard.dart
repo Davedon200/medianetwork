@@ -187,7 +187,6 @@ class AdminDashboard extends StatelessWidget {
           itemBuilder: (context, index) {
             final data = docs[index].data() as Map<String, dynamic>;
             final name = data['name'] ?? '';
-            final email = data['email'] ?? '';
             final phone = data['phone'] ?? '';
             final rating = data['satisfaction'] ?? '';
             final platforms = List<String>.from(data['platforms'] ?? []);
@@ -203,7 +202,7 @@ class AdminDashboard extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
-                  '$email\n$phone\n$rating\nPlatforms: ${platforms.join(', ')}',
+                  '$phone\n$rating\nPlatforms: ${platforms.join(', ')}',
                   style: const TextStyle(color: Colors.white70),
                 ),
                 isThreeLine: true,

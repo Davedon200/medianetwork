@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/app/router.dart';
-import 'package:media_network/core/motion/app_motion.dart';
-import 'package:media_network/core/theme/app_theme.dart';
-import 'package:media_network/core/theme/theme_view_model.dart';
-import 'package:media_network/data/repositories/analytics_repository.dart';
-import 'package:media_network/data/repositories/chat_repository.dart';
-import 'package:media_network/data/repositories/creators_repository.dart';
-import 'package:media_network/data/repositories/media_repository.dart';
-import 'package:media_network/data/repositories/profile_repository.dart';
-import 'package:media_network/data/repositories/registration_repository.dart';
-import 'package:media_network/features/auth/data/auth_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/chat/services/chat_notification_service.dart';
+import 'package:rhapsody_media_network/app/router.dart';
+import 'package:rhapsody_media_network/core/motion/app_motion.dart';
+import 'package:rhapsody_media_network/core/theme/app_theme.dart';
+import 'package:rhapsody_media_network/core/theme/theme_view_model.dart';
+import 'package:rhapsody_media_network/data/repositories/analytics_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/chat_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/creators_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/media_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/profile_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/registration_repository.dart';
+import 'package:rhapsody_media_network/features/auth/data/auth_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/chat/services/chat_notification_service.dart';
 import 'package:provider/provider.dart';
 
 class AppProviders extends StatelessWidget {

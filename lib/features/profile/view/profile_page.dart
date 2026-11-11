@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/profile/view/widgets/profile_avatar.dart';
-import 'package:media_network/features/profile/viewmodel/profile_view_model.dart';
-import 'package:media_network/shared/layout/app_page_shell.dart';
-import 'package:media_network/shared/widgets/hero_chip.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/profile/view/widgets/profile_avatar.dart';
+import 'package:rhapsody_media_network/features/profile/viewmodel/profile_view_model.dart';
+import 'package:rhapsody_media_network/shared/layout/app_page_shell.dart';
+import 'package:rhapsody_media_network/shared/widgets/hero_chip.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {

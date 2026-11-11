@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
 
 class AdminGroupPickerTile extends StatelessWidget {
   const AdminGroupPickerTile({

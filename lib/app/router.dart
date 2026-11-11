@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/app/animated_page.dart';
-import 'package:media_network/core/motion/app_motion.dart';
-import 'package:media_network/core/utils/logger.dart';
-import 'package:media_network/features/admin/view/admin_dashboard.dart';
-import 'package:media_network/features/analytics/view/analytics_page.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/chat/view/chat_thread_page.dart';
-import 'package:media_network/features/chat/view/conversations_page.dart';
-import 'package:media_network/features/creators/view/creators_page.dart';
-import 'package:media_network/features/explore/view/explore_page.dart';
-import 'package:media_network/features/home/view/home_page.dart';
-import 'package:media_network/features/landing/view/landing_page.dart';
-import 'package:media_network/features/profile/view/profile_page.dart';
-import 'package:media_network/features/projects/view/projects_page.dart';
+import 'package:rhapsody_media_network/app/animated_page.dart';
+import 'package:rhapsody_media_network/core/motion/app_motion.dart';
+import 'package:rhapsody_media_network/core/utils/logger.dart';
+import 'package:rhapsody_media_network/features/admin/view/admin_dashboard.dart';
+import 'package:rhapsody_media_network/features/analytics/view/analytics_page.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/chat/view/chat_thread_page.dart';
+import 'package:rhapsody_media_network/features/chat/view/conversations_page.dart';
+import 'package:rhapsody_media_network/features/creators/view/creators_page.dart';
+import 'package:rhapsody_media_network/features/explore/view/explore_page.dart';
+import 'package:rhapsody_media_network/features/home/view/home_page.dart';
+import 'package:rhapsody_media_network/features/landing/view/landing_page.dart';
+import 'package:rhapsody_media_network/features/profile/view/profile_page.dart';
+import 'package:rhapsody_media_network/features/projects/view/projects_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/theme/app_palette.dart';
-import 'package:media_network/data/models/registration.dart';
-import 'package:media_network/data/repositories/analytics_repository.dart';
-import 'package:media_network/data/repositories/registration_repository.dart';
-import 'package:media_network/features/admin/view/widgets/admin_group_picker_tile.dart';
-import 'package:media_network/features/admin/view/widgets/registration_list_tile.dart';
-import 'package:media_network/features/admin/viewmodel/admin_view_model.dart';
-import 'package:media_network/shared/layout/app_scaffold.dart';
-import 'package:media_network/shared/layout/light_panel_scope.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/data/repositories/analytics_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/registration_repository.dart';
+import 'package:rhapsody_media_network/features/admin/view/widgets/admin_group_picker_tile.dart';
+import 'package:rhapsody_media_network/features/admin/view/widgets/registration_list_tile.dart';
+import 'package:rhapsody_media_network/features/admin/viewmodel/admin_view_model.dart';
+import 'package:rhapsody_media_network/shared/layout/app_scaffold.dart';
+import 'package:rhapsody_media_network/shared/layout/light_panel_scope.dart';
 import 'package:provider/provider.dart';
 
 class AdminDashboard extends StatelessWidget {

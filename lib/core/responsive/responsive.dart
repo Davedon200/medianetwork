@@ -1,4 +1,4 @@
-import 'package:media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
 
 abstract final class Responsive {
   static double horizontalPadding(double width) {

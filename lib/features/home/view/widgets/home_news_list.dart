@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/data/models/home_snapshot.dart';
-import 'package:media_network/features/home/view/widgets/network_news_info_card.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/data/models/home_snapshot.dart';
+import 'package:rhapsody_media_network/features/home/view/widgets/network_news_info_card.dart';
 
 class HomeNewsList extends StatelessWidget {
   const HomeNewsList({super.key, required this.items});

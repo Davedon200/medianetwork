@@ -1,14 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:media_network/core/constants/auth_constants.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/data/repositories/profile_repository.dart';
-import 'package:media_network/features/auth/data/auth_repository.dart';
+import 'package:rhapsody_media_network/core/constants/auth_constants.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/data/repositories/profile_repository.dart';
+import 'package:rhapsody_media_network/features/auth/data/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum SignInOutcome { emailLinkSent, sessionStarted }
@@ -124,40 +122,6 @@ class AuthViewModel extends ChangeNotifier {
       'APP_INFO | AuthViewModel | localSessionStarted | '
       'isLoggedIn=$isLoggedIn uid=$_localUid',
     );
-    // #region agent log
-    _emitDebugIngest(
-      message: 'localSessionStarted',
-      data: {'isLoggedIn': isLoggedIn, 'hasUid': _localUid != null},
-    );
-    // #endregion
-  }
-
-  static void _emitDebugIngest({
-    required String message,
-    Map<String, dynamic>? data,
-  }) {
-    final payload = <String, dynamic>{
-      'sessionId': 'd3f316',
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
-      'location': 'auth_view_model.dart',
-      'message': message,
-      'hypothesisId': 'B',
-      'data': data ?? {},
-    };
-    if (kIsWeb) {
-      http
-          .post(
-            Uri.parse(
-              'http://127.0.0.1:7905/ingest/1b0592ac-e32e-44d5-9cde-064f8d4c0cf6',
-            ),
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Debug-Session-Id': 'd3f316',
-            },
-            body: jsonEncode(payload),
-          )
-          .catchError((_) => http.Response('', 500));
-    }
   }
 
   Future<void> _clearLocalSession({bool silent = false}) async {

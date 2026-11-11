@@ -4,11 +4,11 @@ import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/animated_dialog.dart';
-import 'package:media_network/core/theme/app_palette.dart';
-import 'package:media_network/core/theme/text_styles.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/animated_dialog.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/core/theme/text_styles.dart';
 
 class DownloadService {
   static Future<void> downloadFile(
@@ -37,7 +37,7 @@ class DownloadService {
         await FileSaver.instance.saveFile(
           name: fileName,
           bytes: Uint8List.fromList(bytes),
-          fileExtension: _getExtension(url),
+          ext: _getExtension(url),
           mimeType: MimeType.other,
         );
         client.close();

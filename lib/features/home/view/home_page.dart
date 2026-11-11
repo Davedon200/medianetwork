@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/features/home/viewmodel/home_view_model.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/features/home/view/widgets/home_news_list.dart';
-import 'package:media_network/features/home/view/widgets/home_trending_carousel.dart';
-import 'package:media_network/features/home/view/widgets/home_welcome_hero.dart';
-import 'package:media_network/shared/layout/app_scaffold.dart';
-import 'package:media_network/shared/layout/light_panel_scope.dart';
-import 'package:media_network/shared/widgets/section_header.dart';
-import 'package:media_network/shared/widgets/stat_row.dart';
+import 'package:rhapsody_media_network/features/home/viewmodel/home_view_model.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/features/home/view/widgets/home_news_list.dart';
+import 'package:rhapsody_media_network/features/home/view/widgets/home_trending_carousel.dart';
+import 'package:rhapsody_media_network/features/home/view/widgets/home_welcome_hero.dart';
+import 'package:rhapsody_media_network/shared/layout/app_scaffold.dart';
+import 'package:rhapsody_media_network/shared/layout/light_panel_scope.dart';
+import 'package:rhapsody_media_network/shared/widgets/section_header.dart';
+import 'package:rhapsody_media_network/shared/widgets/stat_row.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {

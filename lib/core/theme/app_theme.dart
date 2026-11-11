@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
 
 class AppTheme {
   AppTheme._();

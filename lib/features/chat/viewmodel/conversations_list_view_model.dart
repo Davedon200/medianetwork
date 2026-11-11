@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/data/chat/chat_helpers.dart';
-import 'package:media_network/data/models/conversation.dart';
-import 'package:media_network/data/repositories/chat_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/data/chat/chat_helpers.dart';
+import 'package:rhapsody_media_network/data/models/conversation.dart';
+import 'package:rhapsody_media_network/data/repositories/chat_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
 
 class ConversationsListViewModel extends ChangeNotifier {
   ConversationsListViewModel({

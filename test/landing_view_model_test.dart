@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/data/models/registration.dart';
-import 'package:media_network/data/repositories/analytics_repository.dart';
-import 'package:media_network/data/repositories/registration_repository.dart';
-import 'package:media_network/features/landing/viewmodel/landing_view_model.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/data/repositories/analytics_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/registration_repository.dart';
+import 'package:rhapsody_media_network/features/landing/viewmodel/landing_view_model.dart';
 
 class FakeRegistrationRepository implements RegistrationRepository {
   final Set<String> existingEmails = {};

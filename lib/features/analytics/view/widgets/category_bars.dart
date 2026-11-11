@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/data/models/analytics_snapshot.dart';
-import 'package:media_network/shared/widgets/glass_card.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/data/models/analytics_snapshot.dart';
+import 'package:rhapsody_media_network/shared/widgets/glass_card.dart';
 
 class CategoryBars extends StatelessWidget {
   const CategoryBars({super.key, required this.categories});

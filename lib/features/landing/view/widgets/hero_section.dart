@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/core/responsive/responsive.dart';
-import 'package:media_network/core/theme/text_styles.dart';
-import 'package:media_network/shared/widgets/floating_card.dart';
-import 'package:media_network/shared/widgets/hero_chip.dart';
-import 'package:media_network/shared/widgets/hero_stat.dart';
-import 'package:media_network/shared/widgets/web_button.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/core/responsive/responsive.dart';
+import 'package:rhapsody_media_network/core/theme/text_styles.dart';
+import 'package:rhapsody_media_network/shared/widgets/floating_card.dart';
+import 'package:rhapsody_media_network/shared/widgets/hero_chip.dart';
+import 'package:rhapsody_media_network/shared/widgets/hero_stat.dart';
+import 'package:rhapsody_media_network/shared/widgets/web_button.dart';
 
 class LandingHeroSection extends StatelessWidget {
   const LandingHeroSection({

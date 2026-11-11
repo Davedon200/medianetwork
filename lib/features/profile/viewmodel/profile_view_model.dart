@@ -4,10 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/data/models/user_profile.dart';
-import 'package:media_network/data/repositories/profile_repository.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/data/models/user_profile.dart';
+import 'package:rhapsody_media_network/data/repositories/profile_repository.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   ProfileViewModel({

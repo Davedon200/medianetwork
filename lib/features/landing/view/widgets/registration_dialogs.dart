@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/motion/animated_dialog.dart';
-import 'package:media_network/core/theme/text_styles.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/features/auth/view/widgets/sign_in_link_dialog.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/landing/viewmodel/landing_view_model.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/motion/animated_dialog.dart';
+import 'package:rhapsody_media_network/core/theme/text_styles.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/features/auth/view/widgets/sign_in_link_dialog.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/landing/viewmodel/landing_view_model.dart';
 import 'package:provider/provider.dart';
 
 Future<void> showRegistrationSuccessDialog(

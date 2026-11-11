@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:media_network/data/models/registration.dart';
-import 'package:media_network/data/repositories/analytics_repository.dart';
-import 'package:media_network/data/repositories/registration_repository.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/data/repositories/analytics_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/registration_repository.dart';
 
 enum AdminLoadState { loading, loaded, error }
 

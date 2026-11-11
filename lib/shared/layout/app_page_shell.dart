@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/shared/layout/app_scaffold.dart';
-import 'package:media_network/shared/layout/light_panel_scope.dart';
+import 'package:rhapsody_media_network/shared/layout/app_scaffold.dart';
+import 'package:rhapsody_media_network/shared/layout/light_panel_scope.dart';
 
 class AppPageShell extends StatelessWidget {
   const AppPageShell({

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:media_network/data/models/creator_profile.dart';
-import 'package:media_network/data/repositories/creators_repository.dart';
+import 'package:rhapsody_media_network/data/models/creator_profile.dart';
+import 'package:rhapsody_media_network/data/repositories/creators_repository.dart';
 
 class CreatorsViewModel extends ChangeNotifier {
   CreatorsViewModel({CreatorsRepository? repository})

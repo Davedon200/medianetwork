@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/constants/app_colors.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/data/repositories/analytics_repository.dart';
-import 'package:media_network/data/repositories/registration_repository.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/features/auth/view/widgets/sign_in_link_dialog.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/landing/view/widgets/about_section.dart';
-import 'package:media_network/features/landing/view/widgets/email_validation_dialog.dart';
-import 'package:media_network/features/landing/view/widgets/hero_section.dart';
-import 'package:media_network/features/landing/view/widgets/landing_footer.dart';
-import 'package:media_network/features/landing/view/widgets/registration_dialogs.dart';
-import 'package:media_network/features/landing/view/widgets/registration_form.dart';
-import 'package:media_network/features/landing/viewmodel/landing_view_model.dart';
+import 'package:rhapsody_media_network/core/constants/app_colors.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/data/repositories/analytics_repository.dart';
+import 'package:rhapsody_media_network/data/repositories/registration_repository.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/features/auth/view/widgets/sign_in_link_dialog.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/landing/view/widgets/about_section.dart';
+import 'package:rhapsody_media_network/features/landing/view/widgets/email_validation_dialog.dart';
+import 'package:rhapsody_media_network/features/landing/view/widgets/hero_section.dart';
+import 'package:rhapsody_media_network/features/landing/view/widgets/landing_footer.dart';
+import 'package:rhapsody_media_network/features/landing/view/widgets/registration_dialogs.dart';
+import 'package:rhapsody_media_network/features/landing/view/widgets/registration_form.dart';
+import 'package:rhapsody_media_network/features/landing/viewmodel/landing_view_model.dart';
 import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {

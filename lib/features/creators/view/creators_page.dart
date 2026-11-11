@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/data/repositories/creators_repository.dart';
-import 'package:media_network/features/creators/viewmodel/creators_view_model.dart';
-import 'package:media_network/core/motion/staggered_entrance.dart';
-import 'package:media_network/features/creators/view/widgets/creator_card.dart';
-import 'package:media_network/features/creators/view/widgets/filter_chip_row.dart';
-import 'package:media_network/shared/layout/app_page_shell.dart';
-import 'package:media_network/shared/widgets/section_header.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/data/repositories/creators_repository.dart';
+import 'package:rhapsody_media_network/features/creators/viewmodel/creators_view_model.dart';
+import 'package:rhapsody_media_network/core/motion/staggered_entrance.dart';
+import 'package:rhapsody_media_network/features/creators/view/widgets/creator_card.dart';
+import 'package:rhapsody_media_network/features/creators/view/widgets/filter_chip_row.dart';
+import 'package:rhapsody_media_network/shared/layout/app_page_shell.dart';
+import 'package:rhapsody_media_network/shared/widgets/section_header.dart';
 import 'package:provider/provider.dart';
 
 class CreatorsPage extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/theme/app_palette.dart';
-import 'package:media_network/shared/layout/light_panel_scope.dart';
+import 'package:rhapsody_media_network/core/theme/app_palette.dart';
+import 'package:rhapsody_media_network/shared/layout/light_panel_scope.dart';
 
 extension ThemeContextExt on BuildContext {
   AppPalette get palette =>

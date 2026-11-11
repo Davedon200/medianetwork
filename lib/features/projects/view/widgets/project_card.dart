@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/data/models/project.dart';
-import 'package:media_network/features/projects/view/projects_page.dart';
-import 'package:media_network/shared/widgets/hover_widgets.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/data/models/project.dart';
+import 'package:rhapsody_media_network/features/projects/view/projects_page.dart';
+import 'package:rhapsody_media_network/shared/widgets/hover_widgets.dart';
 
 class ProjectCard extends StatelessWidget {
   const ProjectCard({super.key, required this.project});

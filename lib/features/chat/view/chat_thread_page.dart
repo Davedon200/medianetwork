@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/data/chat/chat_helpers.dart';
-import 'package:media_network/data/models/conversation.dart';
-import 'package:media_network/features/auth/viewmodel/auth_view_model.dart';
-import 'package:media_network/features/chat/services/chat_notification_service.dart';
-import 'package:media_network/features/chat/viewmodel/chat_view_model.dart';
-import 'package:media_network/shared/layout/app_page_shell.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/data/chat/chat_helpers.dart';
+import 'package:rhapsody_media_network/data/models/conversation.dart';
+import 'package:rhapsody_media_network/features/auth/viewmodel/auth_view_model.dart';
+import 'package:rhapsody_media_network/features/chat/services/chat_notification_service.dart';
+import 'package:rhapsody_media_network/features/chat/viewmodel/chat_view_model.dart';
+import 'package:rhapsody_media_network/shared/layout/app_page_shell.dart';
 import 'package:provider/provider.dart';
 
 class ChatThreadPage extends StatelessWidget {

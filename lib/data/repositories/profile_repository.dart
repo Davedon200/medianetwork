@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:media_network/core/utils/app_error_log.dart';
-import 'package:media_network/data/models/registration.dart';
-import 'package:media_network/data/models/user_profile.dart';
+import 'package:rhapsody_media_network/core/utils/app_error_log.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/data/models/user_profile.dart';
 
 abstract class ProfileRepository {
   Future<void> ensureUserDoc(User user);

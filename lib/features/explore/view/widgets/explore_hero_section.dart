@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/constants/breakpoints.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/core/constants/breakpoints.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
 
 class ExploreHeroSection extends StatelessWidget {
   const ExploreHeroSection({super.key});

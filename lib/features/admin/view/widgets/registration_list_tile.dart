@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:media_network/core/extensions/theme_context_ext.dart';
-import 'package:media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/core/extensions/theme_context_ext.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
 
 class RegistrationListTile extends StatelessWidget {
   const RegistrationListTile({

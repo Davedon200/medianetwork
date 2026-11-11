@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:media_network/data/models/registration.dart';
+import 'package:rhapsody_media_network/data/models/registration.dart';
 
 void main() {
   group('Registration', () {
