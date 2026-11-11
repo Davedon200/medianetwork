@@ -56,14 +56,10 @@ class _RhapsodyLandingPageState extends State<RhapsodyLandingPage>
         });
       });
     }
-    if (path == '/admin') {
+    final browserRoute = WebRoutes.routeForBrowserPath(path);
+    if (browserRoute == WebRoutes.admin || browserRoute == WebRoutes.survey) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.pushNamed(WebRoutes.admin);
-      });
-    }
-    if (path == '/survey') {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.pushNamed(WebRoutes.survey);
+        context.pushNamed(browserRoute);
       });
     }
 

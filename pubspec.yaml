@@ -3,7 +3,7 @@ description: "A global network of creative professionals and media innovators"
 
 publish_to: "none"
 
-version: 0.1.11+1
+version: 0.1.12
 
 environment:
   sdk: ^3.9.2

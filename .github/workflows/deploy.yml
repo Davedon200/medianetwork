@@ -45,7 +45,18 @@ jobs:
           --cache-control "public, max-age=31536000, immutable"
 
           aws s3 cp build/web_output/index.html s3://$AWS_BUCKET/index.html \
-            --cache-control "no-store, no-cache, must-revalidate"
+            --cache-control "no-store, no-cache, must-revalidate" \
+            --content-type "text/html"
+
+          # /admin and /survey must return the app, not a missing-file error.
+          for route in admin survey; do
+            aws s3 cp build/web_output/index.html "s3://$AWS_BUCKET/$route" \
+              --cache-control "no-store, no-cache, must-revalidate" \
+              --content-type "text/html"
+            aws s3 cp build/web_output/index.html "s3://$AWS_BUCKET/$route/index.html" \
+              --cache-control "no-store, no-cache, must-revalidate" \
+              --content-type "text/html"
+          done
 
           aws s3 cp build/web_output/version.json s3://$AWS_BUCKET/version.json \
             --cache-control "no-store, no-cache, must-revalidate"

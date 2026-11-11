@@ -27,7 +27,7 @@ class RhapsodyMediaNetworkApp extends StatelessWidget {
         ),
         fontFamily: 'Inter',
       ),
-      initialRoute: WebRoutes.getstartedpage,
+      initialRoute: WebRoutes.routeForBrowserPath(Uri.base.path),
       onGenerateRoute: WebRoutes.instance.generateRoute,
     );
   }

@@ -22,6 +22,15 @@ class WebRoutes {
   static const String resource = "/resource";
   static const String survey = "/survey";
 
+  /// The browser path may be `/survey`, `/survey/`, or `/0.1.11/survey`.
+  static String routeForBrowserPath(String path) {
+    final segments = Uri.parse(path).pathSegments;
+    final page = segments.isEmpty ? '' : segments.last;
+    if (page == 'admin') return admin;
+    if (page == 'survey') return survey;
+    return getstartedpage;
+  }
+
   Route<dynamic>? generateRoute(RouteSettings routeSettings) {
     final routeName = routeSettings.name;
     _logger.d("Route Name: $routeName");
