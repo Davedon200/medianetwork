@@ -1,11 +1,11 @@
 {
-    "name": "media_network",
-    "short_name": "media_network",
+    "name": "Rhapsody Media Network",
+    "short_name": "Media Boost",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A global network of creative professionals and innovators, dedicated to shaping the future of digital content, storytelling, and global media distribution.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
