@@ -3,6 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rhapsody_media_network/services/firestore_service.dart';
 import 'package:rhapsody_media_network/widgets/constant.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _thanksAsset = 'assets/images/survey_thanks.jpg';
+const _thanksAspect = 1024 / 593;
+
+const _kingsChatUrl = 'https://kingschat.online/user/rtv';
 
 const _surveyTitles = [
   'Reverend',
@@ -160,6 +166,7 @@ class _SurveyPageState extends State<SurveyPage> {
                       CheckboxListTile(
                         value: draft.contains(option),
                         activeColor: const Color(0xFF1D4ED8),
+                        checkColor: Colors.white,
                         title: Text(option, style: const TextStyle(color: Colors.black87)),
                         controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (checked) {
@@ -292,6 +299,15 @@ class _SurveyPageState extends State<SurveyPage> {
     final wide = MediaQuery.sizeOf(context).width >= 800;
     final footerHeight = MediaQuery.sizeOf(context).width * (52 / 708);
     final reveal = (footerHeight * 0.75 - 28).clamp(0.0, footerHeight).toDouble();
+    final card = Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 980),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: _done ? _thanks() : _card(child: _form(wide)),
+        ),
+      ),
+    );
     return Scaffold(
       body: DecoratedBox(
         decoration: const BoxDecoration(
@@ -306,34 +322,27 @@ class _SurveyPageState extends State<SurveyPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const _SurveyHeader(),
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  const Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: _SurveyFooter(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: reveal),
-                    child: Transform.translate(
-                      offset: const Offset(0, -8),
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 980),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: _card(
-                              child: _done ? _thanks() : _form(wide),
-                            ),
-                          ),
-                        ),
-                      ),
+              if (_done)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 28),
+                  child: Transform.translate(offset: const Offset(0, -8), child: card),
+                )
+              else
+                Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    const Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: _SurveyFooter(),
                     ),
-                  ),
-                ],
-              ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: reveal),
+                      child: Transform.translate(offset: const Offset(0, -8), child: card),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -342,29 +351,48 @@ class _SurveyPageState extends State<SurveyPage> {
   }
 
   Widget _thanks() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 48),
-      child: Column(
-        children: [
-          Icon(Icons.check_circle, color: Color(0xFFD39212), size: 48),
-          SizedBox(height: 12),
-          Text(
-            'Thank you',
-            style: TextStyle(
-              color: Color(0xFF111827),
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final height = width / _thanksAspect;
+        return SizedBox(
+          width: width,
+          height: height,
+          child: Stack(
+            children: [
+              Image.asset(
+                _thanksAsset,
+                width: width,
+                height: height,
+                fit: BoxFit.fill,
+              ),
+              Positioned(
+                left: width * 106 / 1024,
+                right: width * (1024 - 916) / 1024,
+                top: height * 398 / 593,
+                height: height * (472 - 398) / 593,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Semantics(
+                    button: true,
+                    label: 'Follow on KingsChat',
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => _openFollowLink(_kingsChatUrl),
+                      child: const SizedBox.expand(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 8),
-          Text(
-            'Your Rhapsody TV partner survey has been received.',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xFF475569)),
-          ),
-        ],
-      ),
+        );
+      },
     );
+  }
+
+  Future<void> _openFollowLink(String url) async {
+    await launchUrl(Uri.parse(url), webOnlyWindowName: '_blank');
   }
 
   Widget _form(bool wide) {
@@ -615,25 +643,21 @@ class _SurveyPageState extends State<SurveyPage> {
           ),
           const SizedBox(height: 16),
           _labeled(
-            '8. What new feature will you like to see on Rhapsody TV? *',
+            '8. What new feature will you like to see on Rhapsody TV?',
             TextFormField(
               controller: _feature,
               maxLines: 3,
               style: const TextStyle(color: Color(0xFF111827)),
               decoration: _field('E.g. live chat, offline downloads, personalized recommendations, etc.'),
-              validator: (value) =>
-                  value == null || value.trim().isEmpty ? 'Describe a feature' : null,
             ),
           ),
           _labeled(
-            '9. Suggestions to improve the viewing experience *',
+            '9. Suggestions to improve the viewing experience',
             TextFormField(
               controller: _suggestions,
               maxLines: 3,
               style: const TextStyle(color: Color(0xFF111827)),
               decoration: _field('Share your ideas, comments or recommendations...'),
-              validator: (value) =>
-                  value == null || value.trim().isEmpty ? 'Share a suggestion' : null,
             ),
           ),
           _labeled(
